@@ -28,8 +28,8 @@ var cantHandle1 = require('./bundle-url')/* FIXME: can auto handle deep require 
 import { thing57 as canHandle1 } from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import canHandle2 from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import {canHandle3} from "./bundle-url" /* CHECKME: file(s) didn't exist */
-import { thing67 as tempVar$7g3luogeqf9 } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$7g3luogeqf9
-import { thing67 as tempVar$z3987g82kvj } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$z3987g82kvj
+import { thing67 as tempVar$dqube5rnbt7 } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$dqube5rnbt7
+import { thing67 as tempVar$zz33raqtd2r } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$zz33raqtd2r
 {{{{{{
     var canHandle2 = require('./bundle-url')/* FIXME: can auto handle deep require (await import('./bundle-url')) */;
 }}}}}}
