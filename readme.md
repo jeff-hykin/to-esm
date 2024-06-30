@@ -1,6 +1,6 @@
 # What is this for?
 
-Converting NodeJS require statements to EcmaScript import statments using the Tree Sitter parser (NOT REGEX like all the other tools out there). Works for JavaScript and TypeScript.
+Properly converting NodeJS require statements to EcmaScript import statments (using the Tree Sitter parser NOT REGEX, like all the other tools out there). Works for JavaScript and TypeScript.
 
 # How do I use it?
 
@@ -19,7 +19,7 @@ deno install -Afg https://deno.land/x/to_esm/main/to-esm.js
 
 Usage:
 ```sh
-# non-destructive, creates file1.esm.js
+# non-destructive, creates file1.esm.js, look for "CHECKME" comments
 to-esm ./file1.js
 
 # destructive
