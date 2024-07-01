@@ -76,6 +76,80 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
     return importPathString
 }
 
+/**
+ * file string with require() to file string with import()
+ *
+ * @example
+ * ```js
+ * import { convertImports } from "https://deno.land/x/to_esm/main/impure_api.js"
+ * console.log(
+ *     convertImports({
+ *         fileContent: `
+ *             const { a } = require("b")
+ *             const { c } = require("d")
+ *         `,
+ *         path: "path/of/those/contents.js",
+ *         customConverter: (importPathString) => {
+ *             if (importPathString === "b") {
+ *                 return JSON.stringify("https://deno.land/x/a@1.2.3/mod.js") + "// CHECKME "
+ *             } if (importPathString.startsWith("npm:")) {
+ *                 return JSON.stringify("https://esm.sh/${importPathString.slice(4)}")
+ *             }
+ *         },
+ *         handleUnhandlable: (requireArgs, statementText, statement) => {
+ *             // if the require args are "b" or 'b'
+ *             if (requireArgs.match(/("|')b(\1)/)) {
+ *                 return `import { a } from "https://deno.land/x/a@1.2.3/mod.js" // CHECKME `
+ *             }
+ *         },
+ *     }),
+ * )
+ * ```
+    *
+ * @param {string} arg1.fileContent  - the string content of the file
+ * @param {string} arg1.path  - the path (theoretically) to file content
+ * @param {Function|null} arg1.customConverter  - the list of functions, which take a string(import) and return null(no change) or a string(new import)
+ * @param {Function|null} arg1.handleUnhandlable  - a function, takes requireArgs, statementText, & statement(Node) and returns the replacement of the statement or null(no change)
+ * @param {string} arg1.defaultExtension  - the default extension to use if none is provided
+ * @param {string[]} arg1.nodeBuildinModuleNames  - probably not needed, but if whats builtin changes, this is were to add it
+ * @returns {string} output - the converted file content
+ *
+ */
 export const convertImports = convertImportsBuilder(requirePathToEcmaScriptPath)
 
-export const toEsm = async ({path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames})=>convertImports({fileContent: await FileSystem.read(path), path, nodeBuildinModuleNames})
+/**
+ * file string with require() to file string with import()
+ *
+ * @example
+ * ```js
+ * import { toEsm } from "https://deno.land/x/to_esm/main/impure_api.js"
+ * console.log(
+ *     toEsm({
+ *         path: "some_file.ts",
+ *         customConverter: [
+ *             (importPathString) => {
+ *                 if (importPathString === "b") {
+ *                     return "https://deno.land/x/a@1.2.3/mod.js"
+ *                 } if (importPathString.startsWith("npm:")) {
+ *                     return "https://esm.sh/${importPathString.slice(4)}"
+ *                 }
+ *             },
+ *         ],
+ *         handleUnhandlable: (requireArgs, statementText, statement) => {
+ *             // if the require args are "b" or 'b'
+ *             if (requireArgs.match(/("|')b(\1)/)) {
+ *                 return `import { a } from "https://deno.land/x/a@1.2.3/mod.js" // CHECKME `
+ *             }
+ *         },
+ *     }),
+ * )
+ * ```
+ *
+ * @param {string} arg1.path  - the path (theoretically) to file content
+ * @param {Function|null} arg1.customConverter  - the list of functions, which take a string(import) and return null(no change) or a string(new import)
+ * @param {Function|null} arg1.handleUnhandlable  - a function, takes requireArgs, statementText, & statement(Node) and returns the replacement of the statement or null(no change)
+ * @param {string[]} arg1.nodeBuildinModuleNames - probably not needed, but if npm builtins change, this is were to add that change
+ * @returns {string} output - the converted file content
+ *
+ */
+export const toEsm = async ({path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, customConverter=null, handleUnhandlable=null})=>convertImports({fileContent: await FileSystem.read(path), path, nodeBuildinModuleNames, customConverter, handleUnhandlable})

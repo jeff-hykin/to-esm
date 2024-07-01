@@ -34,12 +34,16 @@ export const defaultNodeBuildinModuleNames = [
 ]
 
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {
-    return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js"}) {
+    return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=null}) {
         const code = fileContent
         const root = parser.parse(code).rootNode
-        // console.log(`root.toJSON() is:`,JSON.stringify(root,0,4))
-        // Deno.exit(0)
-
+        if (customConverter != null && !(customConverter instanceof Array)) {
+            customConverter = [customConverter]
+        }
+        if (customConverter instanceof Array) {
+            customConverter.reverse()
+        }
+        
         const usesModuleExportSomewhere = !!root.quickQueryFirst(`((member_expression (identifier) (property_identifier)) @outer (#eq? @outer "module.exports"))`)
         const usesExportDefaultSomewhere = !!root.quickQueryFirst(`(export_statement ("export") ("default"))`)
         const usingStatements = root.quickQuery(`(expression_statement (string))`, { maxResultDepth: 2 }).filter(each=>each.text.startsWith("'use ") ||each.text.startsWith('"use '))
@@ -143,11 +147,56 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             // unhandlable case
             // 
             if (importType === "unhandlable") {
-                codeChunks.push(statement.text+`/* FIXME: can auto handle deep require (await import${importArgs.text}) */`)
+                let replacement = null
+                if (handleUnhandlable instanceof Function) {
+                    try {
+                        replacement = await handleUnhandlable(importArgs?.text.slice(1,-1), statement.text,statement)
+                        if (typeof replacement === "string") {
+                            codeChunks.push(replacement)
+                        }
+                    } catch (error) {
+                        console.warn(`handleUnhandlable threw an error for ${importArgs?.text}`, error)
+                    }
+                }
+                if (!replacement) {
+                    codeChunks.push(statement.text+`/* FIXME: can auto handle deep require (await import${importArgs.text}) */`)
+                }
                 continue
             }
             
-            const importPathString = await requirePathToEcmaScriptPath(eval(importPath.text), path, { nodeBuildinModuleNames, defaultExtension})
+            const importPathOriginalString = eval(importPath.text)
+            let importPathString
+            if (customConverter) {
+                if (customConverter instanceof Array) {
+                    for (const eachConverter of customConverter) {
+                        try {
+                            if (eachConverter instanceof Function) {
+                                const newString = await eachConverter(importPathOriginalString, path)
+                                if (typeof newString === "string") {
+                                    importPathString = newString
+                                }
+                                break
+                            } else if (eachConverter instanceof Object && typeof eachConverter[importPathOriginalString] === "string") {
+                                importPathString = eachConverter[importPathOriginalString]
+                                break
+                            }
+                        } catch (error) {
+                            console.warn(`customConverter threw an error for ${importPathOriginalString}`, error)
+                        }
+                    }
+                    // this is a bit of a hack, but we don't want to always JSON.stringify it because they could want to ad prefix/postfix comments to the import
+                    // this imports must be sync, so not having either " or ' will never false-positive
+                    // it will only false-negative if the the path literally contains " or '
+                    if (typeof importPathString === "string") {
+                        if (!importPathString.includes('"') && !importPathString.includes("'")) {
+                            importPathString = JSON.stringify(importPathString)
+                        }
+                    }
+                }
+            }
+            if (!importPathString) {
+                importPathString = await requirePathToEcmaScriptPath(eval(importPath.text), path, { nodeBuildinModuleNames, defaultExtension })
+            }
             // 
             // plain
             // 

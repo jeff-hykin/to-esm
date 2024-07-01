@@ -42,7 +42,25 @@ NOTE: there will never be a perfect conversion. Check the output for CHECKME and
 import { toEsm } from "https://deno.land/x/to_esm/main/impure_api.js"
 
 // only does one file at a time
-const newFileContent = await toEsm({ path: "./file1.js", })
+const newFileContent = await toEsm({
+    path: "./file1.js", 
+    customConverter: (importPathString) => {
+        // convert all npm stuff to esm.sh
+        if (importPathString.startsWith("npm:")) {
+            return JSON.stringify("https://esm.sh/${importPathString.slice(4)}")
+        }
+        if (importPathString === "b") {
+            return JSON.stringify("https://deno.land/x/a@1.2.3/mod.js")+" // CHECKME "
+        } 
+    },
+    // if you want to hack an edge case for your own project
+    handleUnhandlable: (requireArgs, statementText, statement) => {
+        // if the require args are "b" or 'b'
+        if (requireArgs.match(/("|')b(\1)/)) {
+            return `import { a } from "https://deno.land/x/a@1.2.3/mod.js" // CHECKME`
+        }
+    }
+})
 ```
 
 ### Frontend API

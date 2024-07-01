@@ -1,0 +1,254 @@
+requireArgs, statementText, statement is: './bundle-url' require('./bundle-url') {
+  type: "call_expression",
+  typeId: 190,
+  startPosition: { row: 25, column: 18 },
+  startIndex: 631,
+  endPosition: { row: 25, column: 41 },
+  endIndex: 654,
+  indent: undefined,
+  hasChildren: true,
+  children: [
+    {
+      type: "identifier",
+      typeId: 1,
+      startPosition: { row: 25, column: 18 },
+      startIndex: 631,
+      endPosition: { row: 25, column: 25 },
+      endIndex: 638,
+      indent: undefined,
+      hasChildren: false,
+      children: []
+    },
+    {
+      type: "arguments",
+      typeId: 211,
+      startPosition: { row: 25, column: 25 },
+      startIndex: 638,
+      endPosition: { row: 25, column: 41 },
+      endIndex: 654,
+      indent: undefined,
+      hasChildren: true,
+      children: [
+        {
+          type: "(",
+          typeId: 19,
+          startPosition: { row: 25, column: 25 },
+          startIndex: 638,
+          endPosition: { row: 25, column: 26 },
+          endIndex: 639,
+          indent: undefined,
+          hasChildren: false,
+          children: []
+        },
+        {
+          type: "string",
+          typeId: 206,
+          startPosition: { row: 25, column: 26 },
+          startIndex: 639,
+          endPosition: { row: 25, column: 40 },
+          endIndex: 653,
+          indent: undefined,
+          hasChildren: true,
+          children: [
+            {
+              type: "'",
+              typeId: 99,
+              startPosition: { row: 25, column: 26 },
+              startIndex: 639,
+              endPosition: { row: 25, column: 27 },
+              endIndex: 640,
+              indent: undefined,
+              hasChildren: false,
+              children: []
+            },
+            {
+              type: "string_fragment",
+              typeId: 100,
+              startPosition: { row: 25, column: 27 },
+              startIndex: 640,
+              endPosition: { row: 25, column: 39 },
+              endIndex: 652,
+              indent: undefined,
+              hasChildren: false,
+              children: []
+            },
+            {
+              type: "'",
+              typeId: 99,
+              startPosition: { row: 25, column: 39 },
+              startIndex: 652,
+              endPosition: { row: 25, column: 40 },
+              endIndex: 653,
+              indent: undefined,
+              hasChildren: false,
+              children: []
+            }
+          ]
+        },
+        {
+          type: ")",
+          typeId: 20,
+          startPosition: { row: 25, column: 40 },
+          startIndex: 653,
+          endPosition: { row: 25, column: 41 },
+          endIndex: 654,
+          indent: undefined,
+          hasChildren: false,
+          children: []
+        }
+      ]
+    }
+  ]
+}
+requireArgs, statementText, statement is: './bundle-url' require('./bundle-url') {
+  type: "call_expression",
+  typeId: 190,
+  startPosition: { row: 32, column: 21 },
+  startIndex: 958,
+  endPosition: { row: 32, column: 44 },
+  endIndex: 981,
+  indent: undefined,
+  hasChildren: true,
+  children: [
+    {
+      type: "identifier",
+      typeId: 1,
+      startPosition: { row: 32, column: 21 },
+      startIndex: 958,
+      endPosition: { row: 32, column: 28 },
+      endIndex: 965,
+      indent: undefined,
+      hasChildren: false,
+      children: []
+    },
+    {
+      type: "arguments",
+      typeId: 211,
+      startPosition: { row: 32, column: 28 },
+      startIndex: 965,
+      endPosition: { row: 32, column: 44 },
+      endIndex: 981,
+      indent: undefined,
+      hasChildren: true,
+      children: [
+        {
+          type: "(",
+          typeId: 19,
+          startPosition: { row: 32, column: 28 },
+          startIndex: 965,
+          endPosition: { row: 32, column: 29 },
+          endIndex: 966,
+          indent: undefined,
+          hasChildren: false,
+          children: []
+        },
+        {
+          type: "string",
+          typeId: 206,
+          startPosition: { row: 32, column: 29 },
+          startIndex: 966,
+          endPosition: { row: 32, column: 43 },
+          endIndex: 980,
+          indent: undefined,
+          hasChildren: true,
+          children: [
+            {
+              type: "'",
+              typeId: 99,
+              startPosition: { row: 32, column: 29 },
+              startIndex: 966,
+              endPosition: { row: 32, column: 30 },
+              endIndex: 967,
+              indent: undefined,
+              hasChildren: false,
+              children: []
+            },
+            {
+              type: "string_fragment",
+              typeId: 100,
+              startPosition: { row: 32, column: 30 },
+              startIndex: 967,
+              endPosition: { row: 32, column: 42 },
+              endIndex: 979,
+              indent: undefined,
+              hasChildren: false,
+              children: []
+            },
+            {
+              type: "'",
+              typeId: 99,
+              startPosition: { row: 32, column: 42 },
+              startIndex: 979,
+              endPosition: { row: 32, column: 43 },
+              endIndex: 980,
+              indent: undefined,
+              hasChildren: false,
+              children: []
+            }
+          ]
+        },
+        {
+          type: ")",
+          typeId: 20,
+          startPosition: { row: 32, column: 43 },
+          startIndex: 980,
+          endPosition: { row: 32, column: 44 },
+          endIndex: 981,
+          indent: undefined,
+          hasChildren: false,
+          children: []
+        }
+      ]
+    }
+  ]
+}
+"use strict";module = module||{};module.exports=module.exports||{};
+// blah
+"use strict";
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+
+import "./sideeffect.js"
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+var cantHandle1 = import { thing } from "this_works.js".thing57.thing58;
+import { thing57 as canHandle1 } from "this_works.js"
+import canHandle2 from "this_works.js"
+import {canHandle3} from "this_works.js"
+import { thing67 as tempVar$8lt63tvqjei } from "this_works.js"; var {canHandle4} = tempVar$8lt63tvqjei
+import { thing67 as tempVar$hrhtnml5ohu } from "this_works.js"; var {canHandle4} = tempVar$hrhtnml5ohu
+{{{{{{
+    var canHandle2 = import { thing } from "this_works.js";
+}}}}}}
+import varBundle from "this_works.js"
+import letBundle from "this_works.js"
+import constBundle from "this_works.js"
+
+import { thing99 } from "input_file.js"
+import { thing4 } from "npm:input_file" /* CHECKME: unclear if file import, assuming npm */
+import { thing4 as  renameded } from "npm:other-thingy/somewhere"
+import { thing } from "npm:other-thingy/somewhere"
+import { thing2 as  renamedThing } from "npm:other-thingy/somewhere"
+
+hello.thing
+hello.thing.thingy
+module.exports = {}
+
+;export default module.exports
