@@ -106,11 +106,11 @@ for (const eachPath of filePaths) {
                 // convert all npm stuff to esm.sh
                 if (importPathString.endsWith(".js")) {
                     console.debug(`importPathString is:`,importPathString)
-                    return JSON.stringify(importPathString.slice(0, -3)+".ts")+ " // AUTO "
+                    return JSON.stringify(importPathString.slice(0, -3)+".ts")+ " /* AUTO */"
                 }
                 if (!defaultNodeBuildinModuleNames.includes(importPathString)) {
                     if (!importPathString.startsWith(".") && !importPathString.startsWith("/") && !importPathString.startsWith("https:") && !importPathString.startsWith("node:") && !importPathString.startsWith("npm:")) {
-                        return JSON.stringify(`npm:${importPathString}`)+" // CHECKME "
+                        return JSON.stringify(`npm:${importPathString}`)+" /* CHECKME */"
                     } 
                 }
             },
