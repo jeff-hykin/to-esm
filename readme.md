@@ -44,7 +44,7 @@ import { toEsm } from "https://deno.land/x/to_esm/main/impure_api.js"
 // only does one file at a time
 const newFileContent = await toEsm({
     path: "./file1.js", 
-    customConverter: (importPathString) => {
+    customConverter: (importPathString, path) => {
         // convert all npm stuff to esm.sh
         if (importPathString.startsWith("npm:")) {
             return JSON.stringify("https://esm.sh/${importPathString.slice(4)}")
