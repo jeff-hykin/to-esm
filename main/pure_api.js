@@ -51,15 +51,13 @@ const converter = convertImportsBuilder(requirePathToEcmaScriptPath)
  *             const { c } = require("d")
  *         `,
  *         path: "path/of/those/contents.js",
- *         customConverter: [
- *             (importPathString) => {
- *                 if (importPathString === "b") {
- *                     return JSON.stringify("https://deno.land/x/a@1.2.3/mod.js")+" // CHECKME "
- *                 } if (importPathString.startsWith("npm:")) {
- *                     return JSON.stringify("https://esm.sh/${importPathString.slice(4)}")
- *                 }
- *             },
- *         ],
+ *         customConverter: (importPathString) => {
+ *             if (importPathString === "b") {
+ *                 return JSON.stringify("https://deno.land/x/a@1.2.3/mod.js")+" // CHECKME "
+ *             } if (importPathString.startsWith("npm:")) {
+ *                 return JSON.stringify("https://esm.sh/${importPathString.slice(4)}")
+ *             }
+ *         },
  *     }),
  * )
  * ```

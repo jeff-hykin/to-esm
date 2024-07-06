@@ -3,8 +3,6 @@
 
 // here
 import "./sideeffect"
-import "./input_file.js"
-import "./input_file"
 import { thing88 as t } from "./bundle-url"
 import tt from "./bundle-url"
 import {ttt} from "./bundle-url"

@@ -126,15 +126,13 @@ export const convertImports = convertImportsBuilder(requirePathToEcmaScriptPath)
  * console.log(
  *     toEsm({
  *         path: "some_file.ts",
- *         customConverter: [
- *             (importPathString) => {
- *                 if (importPathString === "b") {
- *                     return "https://deno.land/x/a@1.2.3/mod.js"
- *                 } if (importPathString.startsWith("npm:")) {
- *                     return "https://esm.sh/${importPathString.slice(4)}"
- *                 }
- *             },
- *         ],
+ *         customConverter: (importPathString) => {
+ *             if (importPathString === "b") {
+ *                 return "https://deno.land/x/a@1.2.3/mod.js"
+ *             } if (importPathString.startsWith("npm:")) {
+ *                 return "https://esm.sh/${importPathString.slice(4)}"
+ *             }
+ *         },
  *         handleUnhandlable: (requireArgs, statementText, statement) => {
  *             // if the require args are "b" or 'b'
  *             if (requireArgs.match(/("|')b(\1)/)) {

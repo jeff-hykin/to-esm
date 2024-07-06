@@ -1,4 +1,5 @@
-import { Parser, parserFromWasm } from "https://deno.land/x/deno_tree_sitter@0.2.2.2/main.js"
+import { parserFromWasm, xmlStylePreview } from "https://deno.land/x/deno_tree_sitter@0.2.5.0/main.js"
+// import { parserFromWasm, xmlStylePreview } from "/Users/jeffhykin/repos/deno-tree-sitter/main.js"
 import javascript from "https://github.com/jeff-hykin/common_tree_sitter_languages/raw/4d8a6d34d7f6263ff570f333cdcf5ded6be89e3d/main/javascript.js"
 const parser = await parserFromWasm(javascript) // path or Uint8Array
 
@@ -34,15 +35,10 @@ export const defaultNodeBuildinModuleNames = [
 ]
 
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {
-    return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=null}) {
+    return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=()=>null}) {
         const code = fileContent
         const root = parser.parse(code).rootNode
-        if (customConverter != null && !(customConverter instanceof Array)) {
-            customConverter = [customConverter]
-        }
-        if (customConverter instanceof Array) {
-            customConverter.reverse()
-        }
+        customConverter = customConverter || (()=>null)
         
         const usesModuleExportSomewhere = !!root.quickQueryFirst(`((member_expression (identifier) (property_identifier)) @outer (#eq? @outer "module.exports"))`)
         const usesExportDefaultSomewhere = !!root.quickQueryFirst(`(export_statement ("export") ("default"))`)
@@ -118,20 +114,28 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             ].map(each=>({...each, importType: 'plain'})),
 
             // TODO: varName = require() // use random generated name and then normal assignment
-            // handle instant function call: let a = require('name1')()
+            // TODO: double expansion: var { other } = require('name1').thing2.thing3
+            // TODO: double destructure: var { other: { other2 } } = require('name1').thing2.thing3
+            // TODO: function call: var a = require('name1')("stuff")
+
+            // 
+            // ES import / export
+            // 
+            ...[
+                // ES import (all different types)
+                ...root.quickQuery(`(import_statement (string) @importPath) @statement`, { maxResultDepth: maxResultDepth+1 }),
+                
+            ].map(each=>({...each, importType: 'esImport'})),
+            
+            ...[
+                // ES import (all different types)
+                ...root.quickQuery(`(export_statement (string) @importPath) @statement`, { maxResultDepth: maxResultDepth+1 }),
+                
+            ].map(each=>({...each, importType: 'esExport'})),
         ]
 
-
-
-        // FIXME: ((variable_declaration (variable_declarator (identifier) @importName (member_expression (call_expression (identifier) @funcCallName (arguments (string) @importPath)) (property_identifier) @attrName))) @statement (#eq? @funcCallName "require"))
-
         let unhandledRequireStatements = root.quickQuery(`((call_expression (identifier) @funcCallName (arguments) @importArgs) @statement (#eq? @funcCallName "require"))`).map(each=>({...each, importType: "unhandlable", }))
-        for (const each of handledStatements) {
-            if (each.funcCallName == null) {
-                console.debug(`each is:`,each)
-            }
-        }
-        const requireStartIndicies = handledStatements.map(each=>each.funcCallName.startIndex) // remove the ones we will have handled
+        const requireStartIndicies = handledStatements.map(each=>each.funcCallName?.startIndex||each.statement.startIndex) // remove the ones we will have handled
         unhandledRequireStatements = unhandledRequireStatements.filter(each=>!requireStartIndicies.includes(each.funcCallName.startIndex))
 
         const nodes = handledStatements.concat(unhandledRequireStatements).sort((a,b)=>a.statement.startIndex-b.statement.startIndex)
@@ -166,32 +170,11 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             
             const importPathOriginalString = eval(importPath.text)
             let importPathString
-            if (customConverter) {
-                if (customConverter instanceof Array) {
-                    for (const eachConverter of customConverter) {
-                        try {
-                            if (eachConverter instanceof Function) {
-                                const newString = await eachConverter(importPathOriginalString, path)
-                                if (typeof newString === "string") {
-                                    importPathString = newString
-                                }
-                                break
-                            } else if (eachConverter instanceof Object && typeof eachConverter[importPathOriginalString] === "string") {
-                                importPathString = eachConverter[importPathOriginalString]
-                                break
-                            }
-                        } catch (error) {
-                            console.warn(`customConverter threw an error for ${importPathOriginalString}`, error)
-                        }
-                    }
-                    // this is a bit of a hack, but we don't want to always JSON.stringify it because they could want to ad prefix/postfix comments to the import
-                    // this imports must be sync, so not having either " or ' will never false-positive
-                    // it will only false-negative if the the path literally contains " or '
-                    if (typeof importPathString === "string") {
-                        if (!importPathString.includes('"') && !importPathString.includes("'")) {
-                            importPathString = JSON.stringify(importPathString)
-                        }
-                    }
+            const newString = await customConverter(importPathOriginalString, path)
+            if (typeof newString === "string") {
+                importPathString = newString
+                if (!importPathString.includes('"') && !importPathString.includes("'")) {
+                    importPathString = JSON.stringify(importPathString)
                 }
             }
             if (!importPathString) {
@@ -239,6 +222,17 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
                         `import { ${attrName.text} as ${randomVarName} } from ${importPathString}; var ${importExpansion.text} = ${randomVarName}`
                     )
                 }
+            } else if (importPathString) {
+                const text = statement.text
+                const preText = text.slice(0, importPath.startIndex-statement.startIndex)
+                const postText = text.slice(importPath.endIndex-statement.startIndex)
+                codeChunks.push(
+                    `${preText}${importPathString}${postText}`
+                )
+            } else {
+                codeChunks.push(
+                    statement.text
+                )
             }
         }
         codeChunks.push(

@@ -1,6 +1,6 @@
 # What is this for?
 
-Properly converting NodeJS require statements to EcmaScript import statments (using the Tree Sitter parser NOT REGEX, like all the other tools out there). Works for JavaScript and TypeScript.
+Properly converting NodeJS require statements to EcmaScript import statments (using the Tree Sitter parser NOT REGEX, like all the other tools out there). Works for JavaScript.
 
 # How do I use it?
 

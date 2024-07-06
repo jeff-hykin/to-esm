@@ -105,10 +105,10 @@ import { version } from "./version.js"
         promises.push(
             toEsm({ path: eachPath }).then(each=>{
                 if (inplace) {
-                    return FileSystem.write({ data: each, path: eachPath})
+                    return FileSystem.write({ data: each, path: eachPath, overwrite: true})
                 } else {
                     const [ folders, itemName, itemExtensionWithDot ] = FileSystem.pathPieces(eachPath)
-                    return FileSystem.write({ data: each, path: `${folders.join("/")}/${itemName}${addExt}${itemExtensionWithDot}`})
+                    return FileSystem.write({ data: each, path: `${folders.join("/")}/${itemName}${addExt}${itemExtensionWithDot}`, overwrite: true})
                 }
             })
         )
