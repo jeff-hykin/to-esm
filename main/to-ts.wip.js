@@ -4,6 +4,7 @@ import { toCamelCase } from "https://deno.land/x/good@1.7.1.0/flattened/to_camel
 import { didYouMean } from "https://deno.land/x/good@1.7.1.0/flattened/did_you_mean.js"
 
 import { toEsm } from './impure_api.js'
+import { defaultNodeBuildinModuleNames } from './common_api.js'
 import { version } from "./version.js"
 
 // 
@@ -97,23 +98,30 @@ if (!recursive) {
     filePaths = filePaths.concat(extraPaths)
 }
 const promises = []
+const wrapper =(func)=>{
+    return (...args)=>{
+        const out = func(...args)
+        if (out!=null) {
+            console.log(`    ${args[0]} => ${out}`)
+        }
+    }
+}
 for (const eachPath of filePaths) {
-    console.debug(`eachPath is:`,eachPath)
+    console.debug(`for:`,eachPath)
     promises.push(
         toEsm({
             path: eachPath,
-            customConverter: (importPathString, path) => {
+            customConverter: wrapper((importPathString, path) => {
                 // convert all npm stuff to esm.sh
                 if (importPathString.endsWith(".js")) {
-                    console.debug(`importPathString is:`,importPathString)
-                    return JSON.stringify(importPathString.slice(0, -3)+".ts")+ " /* AUTO */"
+                    return JSON.stringify(importPathString.slice(0, -3)+".ts")+ " "
                 }
                 if (!defaultNodeBuildinModuleNames.includes(importPathString)) {
                     if (!importPathString.startsWith(".") && !importPathString.startsWith("/") && !importPathString.startsWith("https:") && !importPathString.startsWith("node:") && !importPathString.startsWith("npm:")) {
                         return JSON.stringify(`npm:${importPathString}`)+" /* CHECKME */"
                     } 
                 }
-            },
+            }),
         }).then(each=>{
             if (inplace) {
                 return FileSystem.write({ data: each, path: eachPath, overwrite: true})
