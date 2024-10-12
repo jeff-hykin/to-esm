@@ -41,6 +41,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
         customConverter = customConverter || (()=>null)
         
         const usesModuleExportSomewhere = !!root.quickQueryFirst(`((member_expression (identifier) (property_identifier)) @outer (#eq? @outer "module.exports"))`)
+        const usesExportsSomewhere = !!root.quickQueryFirst(`((identifier) @outer (#eq? @outer "exports"))`)
         const usesExportDefaultSomewhere = !!root.quickQueryFirst(`(export_statement ("export") ("default"))`)
         const usingStatements = root.quickQuery(`(expression_statement (string))`, { maxResultDepth: 2 }).filter(each=>each.text.startsWith("'use ") ||each.text.startsWith('"use '))
         const maxResultDepth = 5
@@ -250,6 +251,8 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             } else {
                 newCode = `\n${newCode}\n;/* CHECKME: module.exports is used but so is export default */`
             }
+        } else if (usesExportsSomewhere) {
+            newCode = `\n${newCode}\n;export default exports`
         }
 
         return newCode
