@@ -2,6 +2,8 @@
 
 Properly converting NodeJS require statements to EcmaScript import statments (using the Tree Sitter parser NOT REGEX, like all the other tools out there). Works for JavaScript.
 
+Note: does not handle exports.
+
 # How do I use it?
 
 There's a CLI, a backend interface, and a client-side interface.
