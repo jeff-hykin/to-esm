@@ -1,6 +1,8 @@
 # What is this for?
 
-Properly converting NodeJS require statements to EcmaScript import statments (using the Tree Sitter parser NOT REGEX, like all the other tools out there). Works for JavaScript.
+Properly converting NodeJS require statements to EcmaScript import statments (using the Tree Sitter parser NOT REGEX, like all the other tools out there). This includes auto-addting `./` in front of local paths, adding `.js` when file extentions are missing, defaulting to `/index.js` when importing a directory, etc.
+
+Works for JavaScript.
 
 Note: does not handle exports.
 
