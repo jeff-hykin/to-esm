@@ -32,6 +32,11 @@ export const defaultNodeBuildinModuleNames = [
     "v8",
     "vm",
     "zlib",
+    "module",
+    "fs/promises",
+    "perf_hooks",
+    "process",
+    "worker_threads",
 ]
 
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {
