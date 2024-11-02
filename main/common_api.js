@@ -205,7 +205,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
                     }
                 }
                 if (!replacement) {
-                    codeChunks.push(statement.text+`/* FIXME: can't auto handle deep require (await import${importArgs.text}) ${xmlStylePreview(statement)}\nstatement.children: ${statement.children[1].children[1].text}*/`)
+                    codeChunks.push(statement.text+`/* FIXME: can't auto handle deep require (await import${importArgs.text}) */`)
                 }
                 continue
             }
@@ -292,7 +292,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             } else {
                 newCode = `\n${newCode}\n;/* CHECKME: module.exports is used but so is export default */`
             }
-        } else if (usesExportsSomewhere) {
+        } else if (usesExportsSomewhere && !newCode.match(/\bexport default exports\s*;?\s*$/)) {
             newCode = `\n${newCode}\n;export default exports`
         }
 
