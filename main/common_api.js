@@ -39,6 +39,10 @@ export const defaultNodeBuildinModuleNames = [
     "worker_threads",
 ]
 
+export function isStaticTemplateString(text) {
+    return !!text.match(/^`(?:\\\$|\\[^$]|\$[^{]|[^$`\\])*`$/)
+}
+
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {
     return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=()=>null}) {
         const code = fileContent

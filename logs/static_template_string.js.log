@@ -1,0 +1,16 @@
+const { TextDecoder, TextEncoder } = require(`util`)
+false
+`howdy ${1}`
+false
+`howdy $1}`
+true
+`howdy \${1}`
+true
+`howdy \\${1}`
+false
+`howdy \\\${1}`
+true
+``
+true
+``
+true
