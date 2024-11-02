@@ -169,7 +169,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
                     }
                 }
                 if (!replacement) {
-                    codeChunks.push(statement.text+`/* FIXME: can auto handle deep require (await import${importArgs.text}) */`)
+                    codeChunks.push(statement.text+`/* FIXME: can't auto handle deep require (await import${importArgs.text}) */`)
                 }
                 continue
             }
