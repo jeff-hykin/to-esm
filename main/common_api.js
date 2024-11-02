@@ -41,7 +41,7 @@ export const defaultNodeBuildinModuleNames = [
 ]
 
 export function isStaticTemplateString(text) {
-    return !!text.match(/^`(?:\\\$|\\[^$]|\$[^{]|[^$`\\])*`$/)
+    return !!text.match(/^`(?:\\\$|\\[^\$]|\$(?=[^\{])|[^\$`\\])*`$/)
 }
 
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {

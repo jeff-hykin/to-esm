@@ -9,6 +9,7 @@ var strings = [
     "`howdy \\\\\\${1}`",
     "``",
     "``",
+    "`$${i}`",
 ]
 for (const each of strings) {
     console.log(each)

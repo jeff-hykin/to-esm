@@ -14,3 +14,5 @@ true
 true
 ``
 true
+`$${i}`
+false
