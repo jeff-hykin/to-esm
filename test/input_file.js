@@ -1,8 +1,21 @@
 // blah
 "use strict";
 
-// FIXME: the backticks are not supported yet
 const { TextDecoder, TextEncoder } = require(`util`)
+
+import "node:fs/promises"
+import "node:path"
+import "node:process"
+import "node:url"
+import "./shared/rollup.js"
+import "./shared/parseAst.js"
+import loadConfigFile_js from "./shared/loadConfigFile.js"
+import "node:tty"
+import "node:path"
+import "./native.js"
+import "node:perf_hooks"
+import "./getLogFilter.js"
+
 
 // here
 import "./sideeffect"

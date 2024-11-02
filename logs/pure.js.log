@@ -2,6 +2,54 @@ targetImport is: $PROJECT_ROOT/tests/../test/util
 FileSystem.sync.info(targetImport).isFile is: false
 targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/util.ts
 FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/node:fs/promises
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/node:fs/promises.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/node:path
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/node:path.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/node:process
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/node:process.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/node:url
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/node:url.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/./shared/rollup.js
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/./shared/rollup.js.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/./shared/parseAst.js
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/./shared/parseAst.js.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/./shared/loadConfigFile.js
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/./shared/loadConfigFile.js.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/node:tty
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/node:tty.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/node:path
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/node:path.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/./native.js
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/./native.js.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/node:perf_hooks
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/node:perf_hooks.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
+targetImport is: $PROJECT_ROOT/tests/../test/./getLogFilter.js
+FileSystem.sync.info(targetImport).isFile is: false
+targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/./getLogFilter.js.ts
+FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
 targetImport is: $PROJECT_ROOT/tests/../test/./sideeffect
 FileSystem.sync.info(targetImport).isFile is: false
 targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/./sideeffect.ts
@@ -21,20 +69,20 @@ FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
 requireArgs, statementText, statement is: './bundle-url' require('./bundle-url') {
   type: "call_expression",
   typeId: 190,
-  startPosition: { row: 42, column: 18 },
-  startIndex: 1087,
-  endPosition: { row: 42, column: 41 },
-  endIndex: 1110,
+  startPosition: { row: 55, column: 18 },
+  startIndex: 1355,
+  endPosition: { row: 55, column: 41 },
+  endIndex: 1378,
   indent: undefined,
   hasChildren: true,
   children: [
     {
       type: "identifier",
       typeId: 1,
-      startPosition: { row: 42, column: 18 },
-      startIndex: 1087,
-      endPosition: { row: 42, column: 25 },
-      endIndex: 1094,
+      startPosition: { row: 55, column: 18 },
+      startIndex: 1355,
+      endPosition: { row: 55, column: 25 },
+      endIndex: 1362,
       indent: undefined,
       hasChildren: false,
       children: []
@@ -42,20 +90,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
     {
       type: "arguments",
       typeId: 211,
-      startPosition: { row: 42, column: 25 },
-      startIndex: 1094,
-      endPosition: { row: 42, column: 41 },
-      endIndex: 1110,
+      startPosition: { row: 55, column: 25 },
+      startIndex: 1362,
+      endPosition: { row: 55, column: 41 },
+      endIndex: 1378,
       indent: undefined,
       hasChildren: true,
       children: [
         {
           type: "(",
           typeId: 19,
-          startPosition: { row: 42, column: 25 },
-          startIndex: 1094,
-          endPosition: { row: 42, column: 26 },
-          endIndex: 1095,
+          startPosition: { row: 55, column: 25 },
+          startIndex: 1362,
+          endPosition: { row: 55, column: 26 },
+          endIndex: 1363,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -63,20 +111,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: "string",
           typeId: 206,
-          startPosition: { row: 42, column: 26 },
-          startIndex: 1095,
-          endPosition: { row: 42, column: 40 },
-          endIndex: 1109,
+          startPosition: { row: 55, column: 26 },
+          startIndex: 1363,
+          endPosition: { row: 55, column: 40 },
+          endIndex: 1377,
           indent: undefined,
           hasChildren: true,
           children: [
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 42, column: 26 },
-              startIndex: 1095,
-              endPosition: { row: 42, column: 27 },
-              endIndex: 1096,
+              startPosition: { row: 55, column: 26 },
+              startIndex: 1363,
+              endPosition: { row: 55, column: 27 },
+              endIndex: 1364,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -84,10 +132,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "string_fragment",
               typeId: 100,
-              startPosition: { row: 42, column: 27 },
-              startIndex: 1096,
-              endPosition: { row: 42, column: 39 },
-              endIndex: 1108,
+              startPosition: { row: 55, column: 27 },
+              startIndex: 1364,
+              endPosition: { row: 55, column: 39 },
+              endIndex: 1376,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -95,10 +143,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 42, column: 39 },
-              startIndex: 1108,
-              endPosition: { row: 42, column: 40 },
-              endIndex: 1109,
+              startPosition: { row: 55, column: 39 },
+              startIndex: 1376,
+              endPosition: { row: 55, column: 40 },
+              endIndex: 1377,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -108,10 +156,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: ")",
           typeId: 20,
-          startPosition: { row: 42, column: 40 },
-          startIndex: 1109,
-          endPosition: { row: 42, column: 41 },
-          endIndex: 1110,
+          startPosition: { row: 55, column: 40 },
+          startIndex: 1377,
+          endPosition: { row: 55, column: 41 },
+          endIndex: 1378,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -123,20 +171,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
 requireArgs, statementText, statement is: './bundle-url' require('./bundle-url') {
   type: "call_expression",
   typeId: 190,
-  startPosition: { row: 49, column: 21 },
-  startIndex: 1414,
-  endPosition: { row: 49, column: 44 },
-  endIndex: 1437,
+  startPosition: { row: 62, column: 21 },
+  startIndex: 1682,
+  endPosition: { row: 62, column: 44 },
+  endIndex: 1705,
   indent: undefined,
   hasChildren: true,
   children: [
     {
       type: "identifier",
       typeId: 1,
-      startPosition: { row: 49, column: 21 },
-      startIndex: 1414,
-      endPosition: { row: 49, column: 28 },
-      endIndex: 1421,
+      startPosition: { row: 62, column: 21 },
+      startIndex: 1682,
+      endPosition: { row: 62, column: 28 },
+      endIndex: 1689,
       indent: undefined,
       hasChildren: false,
       children: []
@@ -144,20 +192,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
     {
       type: "arguments",
       typeId: 211,
-      startPosition: { row: 49, column: 28 },
-      startIndex: 1421,
-      endPosition: { row: 49, column: 44 },
-      endIndex: 1437,
+      startPosition: { row: 62, column: 28 },
+      startIndex: 1689,
+      endPosition: { row: 62, column: 44 },
+      endIndex: 1705,
       indent: undefined,
       hasChildren: true,
       children: [
         {
           type: "(",
           typeId: 19,
-          startPosition: { row: 49, column: 28 },
-          startIndex: 1421,
-          endPosition: { row: 49, column: 29 },
-          endIndex: 1422,
+          startPosition: { row: 62, column: 28 },
+          startIndex: 1689,
+          endPosition: { row: 62, column: 29 },
+          endIndex: 1690,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -165,20 +213,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: "string",
           typeId: 206,
-          startPosition: { row: 49, column: 29 },
-          startIndex: 1422,
-          endPosition: { row: 49, column: 43 },
-          endIndex: 1436,
+          startPosition: { row: 62, column: 29 },
+          startIndex: 1690,
+          endPosition: { row: 62, column: 43 },
+          endIndex: 1704,
           indent: undefined,
           hasChildren: true,
           children: [
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 49, column: 29 },
-              startIndex: 1422,
-              endPosition: { row: 49, column: 30 },
-              endIndex: 1423,
+              startPosition: { row: 62, column: 29 },
+              startIndex: 1690,
+              endPosition: { row: 62, column: 30 },
+              endIndex: 1691,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -186,10 +234,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "string_fragment",
               typeId: 100,
-              startPosition: { row: 49, column: 30 },
-              startIndex: 1423,
-              endPosition: { row: 49, column: 42 },
-              endIndex: 1435,
+              startPosition: { row: 62, column: 30 },
+              startIndex: 1691,
+              endPosition: { row: 62, column: 42 },
+              endIndex: 1703,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -197,10 +245,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 49, column: 42 },
-              startIndex: 1435,
-              endPosition: { row: 49, column: 43 },
-              endIndex: 1436,
+              startPosition: { row: 62, column: 42 },
+              startIndex: 1703,
+              endPosition: { row: 62, column: 43 },
+              endIndex: 1704,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -210,10 +258,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: ")",
           typeId: 20,
-          startPosition: { row: 49, column: 43 },
-          startIndex: 1436,
-          endPosition: { row: 49, column: 44 },
-          endIndex: 1437,
+          startPosition: { row: 62, column: 43 },
+          startIndex: 1704,
+          endPosition: { row: 62, column: 44 },
+          endIndex: 1705,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -242,8 +290,21 @@ FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
 // blah
 "use strict";
 
-// FIXME: the backticks are not supported yet
 import { TextDecoder, TextEncoder } from "node:util"
+
+import "node:fs/promises"
+import "node:path"
+import "node:process"
+import "node:url"
+import "./shared/rollup.js"
+import "./shared/parseAst.js"
+import loadConfigFile_js from "./shared/loadConfigFile.js"
+import "node:tty"
+import "node:path"
+import "./native.js"
+import "node:perf_hooks"
+import "./getLogFilter.js"
+
 
 // here
 import "./sideeffect.js"
@@ -285,8 +346,8 @@ var cantHandle1 = import { thing } from "this_works.js".thing57.thing58;
 import { thing57 as canHandle1 } from "this_works.js"
 import canHandle2 from "this_works.js"
 import {canHandle3} from "this_works.js"
-import { thing67 as tempVar$eqncpwiy5y } from "this_works.js"; var {canHandle4} = tempVar$eqncpwiy5y
-import { thing67 as tempVar$dza9ou4ccx9 } from "this_works.js"; var {canHandle4} = tempVar$dza9ou4ccx9
+import { thing67 as tempVar$jkh30sgt5nj } from "this_works.js"; var {canHandle4} = tempVar$jkh30sgt5nj
+import { thing67 as tempVar$91g6mbonem7 } from "this_works.js"; var {canHandle4} = tempVar$91g6mbonem7
 {{{{{{
     var canHandle2 = import { thing } from "this_works.js";
 }}}}}}
