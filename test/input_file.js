@@ -1,6 +1,9 @@
 // blah
 "use strict";
 
+// FIXME: the backticks are not supported yet
+const { TextDecoder, TextEncoder } = require(`util`)
+
 // here
 import "./sideeffect"
 import "./input_file.js"

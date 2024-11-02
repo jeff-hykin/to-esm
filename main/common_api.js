@@ -1,7 +1,8 @@
-import { parserFromWasm, xmlStylePreview } from "https://deno.land/x/deno_tree_sitter@0.2.5.0/main.js"
+import { parserFromWasm, xmlStylePreview } from "https://deno.land/x/deno_tree_sitter@0.2.6.0/main.js"
 // import { parserFromWasm, xmlStylePreview } from "/Users/jeffhykin/repos/deno-tree-sitter/main.js"
 import javascript from "https://github.com/jeff-hykin/common_tree_sitter_languages/raw/4d8a6d34d7f6263ff570f333cdcf5ded6be89e3d/main/javascript.js"
 const parser = await parserFromWasm(javascript) // path or Uint8Array
+import { capitalize, indent, toCamelCase, digitsToEnglishArray, toPascalCase, toKebabCase, toSnakeCase, toScreamingKebabCase, toScreamingSnakeCase, toRepresentation, toString, regex, findAll, iterativelyFindAll, escapeRegexMatch, escapeRegexReplace, extractFirst, isValidIdentifier, removeCommonPrefix } from "https://deno.land/x/good@1.13.0.1/string.js"
 
 export const defaultNodeBuildinModuleNames = [
     "assert",
@@ -46,14 +47,45 @@ export function isStaticTemplateString(text) {
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {
     return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=()=>null}) {
         const code = fileContent
-        const root = parser.parse(code).rootNode
+        // 
+        // convert static template strings to actual normal strings (a bit inefficient)
+        // 
+        const firstTree = parser.parse({string: code, withWhitespace: true})
+        const newStringChunks = []
+        next_node: for (const [ parents, node, direction ] of firstTree.rootNode.traverse()) {
+            // skip children of template strings
+            for (const each of parents) {
+                if (each.type === "template_string") {
+                    continue next_node
+                }
+            }
+            if (direction === "->") {
+                // special handle template strings
+                if (node.type === "template_string") {
+                    if (isStaticTemplateString(node.text)) {
+                        newStringChunks.push(
+                            JSON.stringify(eval(node.text))
+                        )
+                    } else {
+                        newStringChunks.push(node.text)
+                    }
+                    continue
+                }
+            }
+            // normal
+            const isLeafNode = direction == "-"
+            if (isLeafNode) {
+                newStringChunks.push(node.text)
+            }
+        }
+        const root = parser.parse(newStringChunks.join("")).rootNode
         customConverter = customConverter || (()=>null)
         
         const usesModuleExportSomewhere = !!root.quickQueryFirst(`((member_expression (identifier) (property_identifier)) @outer (#eq? @outer "module.exports"))`)
         const usesExportsSomewhere = !!root.quickQueryFirst(`((identifier) @outer (#eq? @outer "exports"))`)
         const usesExportDefaultSomewhere = !!root.quickQueryFirst(`(export_statement ("export") ("default"))`)
         const usingStatements = root.quickQuery(`(expression_statement (string))`, { maxResultDepth: 2 }).filter(each=>each.text.startsWith("'use ") ||each.text.startsWith('"use '))
-        const maxResultDepth = 5
+        const maxResultDepth = 5 // NOTE: this not as limiting as it seems: we only need to find top-level require statements, all the others will be handled by a different query
         const handledStatements = [
             // simple require statements
             ...[
@@ -173,7 +205,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
                     }
                 }
                 if (!replacement) {
-                    codeChunks.push(statement.text+`/* FIXME: can't auto handle deep require (await import${importArgs.text}) */`)
+                    codeChunks.push(statement.text+`/* FIXME: can't auto handle deep require (await import${importArgs.text}) ${xmlStylePreview(statement)}\nstatement.children: ${statement.children[1].children[1].text}*/`)
                 }
                 continue
             }

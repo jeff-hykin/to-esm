@@ -2,6 +2,9 @@
 // blah
 "use strict";
 
+// FIXME: the backticks are not supported yet
+import { TextDecoder, TextEncoder } from "node:util"
+
 // here
 import "./sideeffect" /* CHECKME: file(s) didn't exist */
 import "./input_file.js"
@@ -38,14 +41,40 @@ function getBaseURL(url) {
   return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
 }
 
-var cantHandle1 = require('./bundle-url')/* FIXME: can auto handle deep require (await import('./bundle-url')) */.thing57.thing58;
+var cantHandle1 = require('./bundle-url')/* FIXME: can't auto handle deep require (await import('./bundle-url')) <call_expression>
+    <identifier text="require" />
+    <arguments>
+        <"(" text="(" />
+        <string>
+            <"'" text="'" />
+            <string_fragment text="./bundle-url" />
+            <"'" text="'" />
+        </string>
+        <")" text=")" />
+    </arguments>
+</call_expression>
+
+statement.children: './bundle-url'*/.thing57.thing58;
 import { thing57 as canHandle1 } from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import canHandle2 from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import {canHandle3} from "./bundle-url" /* CHECKME: file(s) didn't exist */
-import { thing67 as tempVar$td6tcdsi62 } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$td6tcdsi62
-import { thing67 as tempVar$2yccrmruw7d } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$2yccrmruw7d
+import { thing67 as tempVar$vmv6pq172k } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$vmv6pq172k
+import { thing67 as tempVar$99vpg526ond } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$99vpg526ond
 {{{{{{
-    var canHandle2 = require('./bundle-url')/* FIXME: can auto handle deep require (await import('./bundle-url')) */;
+    var canHandle2 = require('./bundle-url')/* FIXME: can't auto handle deep require (await import('./bundle-url')) <call_expression>
+    <identifier text="require" />
+    <arguments>
+        <"(" text="(" />
+        <string>
+            <"'" text="'" />
+            <string_fragment text="./bundle-url" />
+            <"'" text="'" />
+        </string>
+        <")" text=")" />
+    </arguments>
+</call_expression>
+
+statement.children: './bundle-url'*/;
 }}}}}}
 import varBundle from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import letBundle from "./bundle-url" /* CHECKME: file(s) didn't exist */
