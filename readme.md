@@ -15,7 +15,7 @@ There's a CLI, a backend interface, and a client-side interface.
 Install
 
 ```shell
-# isntall deno
+# install deno
 curl -fsSL https://deno.land/install.sh | sh
 # install to-esm
 deno install -Afg https://deno.land/x/to_esm/main/to-esm.js
