@@ -86,6 +86,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
         const usesExportDefaultSomewhere = !!root.quickQueryFirst(`(export_statement ("export") ("default"))`)
         const usingStatements = root.quickQuery(`(expression_statement (string))`, { maxResultDepth: 2 }).filter(each=>each.text.startsWith("'use ") ||each.text.startsWith('"use '))
         const maxResultDepth = 5 // NOTE: this not as limiting as it seems: we only need to find top-level require statements, all the others will be handled by a different query
+                                 //       it might be legitmately impossible to have a top level require that is deeper than this
         const handledStatements = [
             // simple require statements
             ...[
