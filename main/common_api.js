@@ -45,7 +45,7 @@ export function isStaticTemplateString(text) {
 }
 
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {
-    return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=()=>null}) {
+    return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=()=>null, convertWarning=null}) {
         const code = fileContent
         // 
         // convert static template strings to actual normal strings (a bit inefficient)
@@ -222,7 +222,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
                 }
             }
             if (!importPathString) {
-                importPathString = await requirePathToEcmaScriptPath(eval(importPath.text), path, { nodeBuildinModuleNames, defaultExtension })
+                importPathString = await requirePathToEcmaScriptPath(eval(importPath.text), path, { nodeBuildinModuleNames, defaultExtension, convertWarning })
             }
             // 
             // plain

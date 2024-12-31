@@ -37,12 +37,15 @@ import { version } from "./version.js"
             # recursive
             to-esm --recursive .
             to-esm -r .
+
+            # import converters
+            to-esm --prefix-for-unknowns "npm:" --recursive .
         `)
         Deno.exit(0)
     }
 
 // 
-// normal usage
+// parsing args
 // 
     const output = parseArgs({
         rawArgs: Deno.args,
@@ -55,7 +58,7 @@ import { version } from "./version.js"
             // [["--no-default-args"], flag, ],
             // [["--add-arg"], initialValue([]), ],
             // [["--add-unix-arg"], initialValue([]), ],
-            // [["--add-windows-arg"], initialValue([]), ],
+            [["--prefix-for-unknowns"], initialValue(null), (str)=>str ],
         ],
         nameTransformer: toCamelCase,
         namedArgsStopper: "--",
@@ -73,7 +76,13 @@ import { version } from "./version.js"
     })
     
     // console.debug(`output is:`,output)
-    const { recursive, addExt, inplace, extensionsToConvert: extensionsToConvertString } = output.simplifiedNames
+    const {
+        recursive,
+        addExt,
+        inplace,
+        extensionsToConvert: extensionsToConvertString,
+        prefixForUnknowns,
+    } = output.simplifiedNames
     let filePaths = output.argList
     const extensionsToConvert = extensionsToConvertString.split(`,`).map(each=>each.trim())
 // 
@@ -100,10 +109,24 @@ import { version } from "./version.js"
         )
         filePaths = filePaths.concat(extraPaths)
     }
+    let convertWarning = null
+    if (prefixForUnknowns) {
+        convertWarning = async (importPathString, { importWarning }={}) => {
+            if (importPathString.startsWith('npm:')) {
+                importPathString = importPathString.slice(4)
+            }
+            if (importWarning.includes('assuming npm')) {
+                return `${JSON.stringify(prefixForUnknowns+importPathString)} /* CHECKME: unknown that was prefixed */`
+            }
+        }
+    }
     const promises = []
     for (const eachPath of filePaths) {
         promises.push(
-            toEsm({ path: eachPath }).then(each=>{
+            toEsm({
+                path: eachPath,
+                convertWarning,
+            }).then(each=>{
                 if (inplace) {
                     return FileSystem.write({ data: each, path: eachPath, overwrite: true})
                 } else {

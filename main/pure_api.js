@@ -71,4 +71,4 @@ const converter = convertImportsBuilder(requirePathToEcmaScriptPath)
  * @returns {string} output - the converted file content
  *
  */
-export const convertImports = ({ fileContent, path, nodeBuildinModuleNames = defaultNodeBuildinModuleNames, defaultExtension = ".js", customConverter = null, handleUnhandlable = null }) => converter({ fileContent, path, nodeBuildinModuleNames, defaultExtension, customConverter, handleUnhandlable })
+export const convertImports = ({ fileContent, path, nodeBuildinModuleNames = defaultNodeBuildinModuleNames, defaultExtension = ".js", customConverter = null, handleUnhandlable = null, convertWarning = null }) => converter({ fileContent, path, nodeBuildinModuleNames, defaultExtension, customConverter, handleUnhandlable, convertWarning })

@@ -1,7 +1,7 @@
 import { defaultNodeBuildinModuleNames, convertImportsBuilder } from "./common_api.js"
 import { FileSystem, glob } from "https://deno.land/x/quickr@0.6.67/main/file_system.js"
 
-export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames}={})=>{
+export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning}={})=>{
     const targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
     let importWarning = null
     if (nodeBuildinModuleNames.includes(importPathString)) {
@@ -70,11 +70,16 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
             }
         }
     }
-    importPathString = JSON.stringify(importPathString)
+    let importPathCode = JSON.stringify(importPathString)
     if (importWarning) {
-        importPathString = `${importPathString} /* ${importWarning} */`
+        const importPathCodeWithWarning = `${importPathCode} /* ${importWarning} */`
+        if (convertWarning) {
+            importPathCode = (await convertWarning(importPathString, { importWarning })) || importPathCodeWithWarning
+        } else {
+            importPathCode = importPathCodeWithWarning
+        }
     }
-    return importPathString
+    return importPathCode
 }
 
 /**
@@ -106,10 +111,11 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
  *     }),
  * )
  * ```
-    *
+ *
  * @param {string} arg1.fileContent  - the string content of the file
  * @param {string} arg1.path  - the path (theoretically) to file content
- * @param {Function|null} arg1.customConverter  - the list of functions, which take a string(import) and return null(no change) or a string(new import)
+ * @param {Function|null} arg1.customConverter  - a function which takes a string(import) and returns either null(no change) or a string(new import)
+ * @param {Function|null} arg1.convertWarning - a function which take a string(import) and return null(no change) or a string(new import) but only gets called if the normal handler is unsure about the conversion
  * @param {Function|null} arg1.handleUnhandlable  - a function, takes requireArgs, statementText, & statement(Node) and returns the replacement of the statement or null(no change)
  * @param {string} arg1.defaultExtension  - the default extension to use if none is provided
  * @param {string[]} arg1.nodeBuildinModuleNames  - probably not needed, but if whats builtin changes, this is were to add it
@@ -151,4 +157,4 @@ export const convertImports = convertImportsBuilder(requirePathToEcmaScriptPath)
  * @returns {string} output - the converted file content
  *
  */
-export const toEsm = async ({path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, customConverter=null, handleUnhandlable=null})=>convertImports({fileContent: await FileSystem.read(path), path, nodeBuildinModuleNames, customConverter, handleUnhandlable})
+export const toEsm = async ({path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, customConverter=null, handleUnhandlable=null, convertWarning=null})=>convertImports({fileContent: await FileSystem.read(path), path, nodeBuildinModuleNames, customConverter, handleUnhandlable, convertWarning})
