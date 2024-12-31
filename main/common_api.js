@@ -217,6 +217,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             if (typeof newString === "string") {
                 importPathString = newString
                 if (!importPathString.includes('"') && !importPathString.includes("'")) {
+                    console.warn(`toEsm() was given a customConverter().\nThat converter returned a string, but the string wasn't a valid import string.\nIt probably just needed to be escaped but wasn't\n    given                 : ${JSON.stringify(newString)}\n    likely what was needed: ${JSON.stringify(JSON.stringify(newString))}\n\nWhy don't we escape this for you without warning?\nBecause you might want to add a comment/hint after the escaped import\nThe begining of the customConverter was:\n    ${customConverter.toString().slice(0,150)}\n\n`)
                     importPathString = JSON.stringify(importPathString)
                 }
             }
