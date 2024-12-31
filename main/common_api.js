@@ -1,4 +1,4 @@
-import { parserFromWasm, xmlStylePreview } from "https://deno.land/x/deno_tree_sitter@0.2.6.0/main.js"
+import { parserFromWasm, xmlStylePreview, flatNodeList } from "https://deno.land/x/deno_tree_sitter@0.2.6.0/main.js"
 // import { parserFromWasm, xmlStylePreview } from "/Users/jeffhykin/repos/deno-tree-sitter/main.js"
 import javascript from "https://github.com/jeff-hykin/common_tree_sitter_languages/raw/4d8a6d34d7f6263ff570f333cdcf5ded6be89e3d/main/javascript.js"
 const parser = await parserFromWasm(javascript) // path or Uint8Array
@@ -189,7 +189,9 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
                 code.slice(previousIndex, statement.startIndex)
             )
             previousIndex = statement.endIndex
-
+            // if (importType === "esImport" && statement.text.includes("thing79")) {
+            //     console.debug(`statement is:`,xmlStylePreview(statement))
+            // }
             // 
             // unhandlable case
             // 
@@ -217,6 +219,19 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             if (typeof newString === "string") {
                 importPathString = newString
                 if (!importPathString.includes('"') && !importPathString.includes("'")) {
+                    // WIP better check:
+                    // flatNodeList(parser.parse(importPathString).rootNode)
+                    // <program>
+                    //     <comment text="/*hi*/" />
+                    //     <expression_statement>
+                    //         <string>
+                    //             <"\"" text="\"" />
+                    //             <string_fragment text="ho" />
+                    //             <"\"" text="\"" />
+                    //         </string>
+                    //         <comment text="/*bye*/" />
+                    //     </expression_statement>
+                    // </program>
                     console.warn(`toEsm() was given a customConverter().\nThat converter returned a string, but the string wasn't a valid import string.\nIt probably just needed to be escaped but wasn't\n    given                 : ${JSON.stringify(newString)}\n    likely what was needed: ${JSON.stringify(JSON.stringify(newString))}\n\nWhy don't we escape this for you without warning?\nBecause you might want to add a comment/hint after the escaped import\nThe begining of the customConverter was:\n    ${customConverter.toString().slice(0,150)}\n\n`)
                     importPathString = JSON.stringify(importPathString)
                 }
