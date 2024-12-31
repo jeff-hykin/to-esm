@@ -69,20 +69,20 @@ FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
 requireArgs, statementText, statement is: './bundle-url' require('./bundle-url') {
   type: "call_expression",
   typeId: 190,
-  startPosition: { row: 55, column: 18 },
-  startIndex: 1355,
-  endPosition: { row: 55, column: 41 },
-  endIndex: 1378,
+  startPosition: { row: 56, column: 18 },
+  startIndex: 1431,
+  endPosition: { row: 56, column: 41 },
+  endIndex: 1454,
   indent: undefined,
   hasChildren: true,
   children: [
     {
       type: "identifier",
       typeId: 1,
-      startPosition: { row: 55, column: 18 },
-      startIndex: 1355,
-      endPosition: { row: 55, column: 25 },
-      endIndex: 1362,
+      startPosition: { row: 56, column: 18 },
+      startIndex: 1431,
+      endPosition: { row: 56, column: 25 },
+      endIndex: 1438,
       indent: undefined,
       hasChildren: false,
       children: []
@@ -90,20 +90,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
     {
       type: "arguments",
       typeId: 211,
-      startPosition: { row: 55, column: 25 },
-      startIndex: 1362,
-      endPosition: { row: 55, column: 41 },
-      endIndex: 1378,
+      startPosition: { row: 56, column: 25 },
+      startIndex: 1438,
+      endPosition: { row: 56, column: 41 },
+      endIndex: 1454,
       indent: undefined,
       hasChildren: true,
       children: [
         {
           type: "(",
           typeId: 19,
-          startPosition: { row: 55, column: 25 },
-          startIndex: 1362,
-          endPosition: { row: 55, column: 26 },
-          endIndex: 1363,
+          startPosition: { row: 56, column: 25 },
+          startIndex: 1438,
+          endPosition: { row: 56, column: 26 },
+          endIndex: 1439,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -111,20 +111,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: "string",
           typeId: 206,
-          startPosition: { row: 55, column: 26 },
-          startIndex: 1363,
-          endPosition: { row: 55, column: 40 },
-          endIndex: 1377,
+          startPosition: { row: 56, column: 26 },
+          startIndex: 1439,
+          endPosition: { row: 56, column: 40 },
+          endIndex: 1453,
           indent: undefined,
           hasChildren: true,
           children: [
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 55, column: 26 },
-              startIndex: 1363,
-              endPosition: { row: 55, column: 27 },
-              endIndex: 1364,
+              startPosition: { row: 56, column: 26 },
+              startIndex: 1439,
+              endPosition: { row: 56, column: 27 },
+              endIndex: 1440,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -132,10 +132,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "string_fragment",
               typeId: 100,
-              startPosition: { row: 55, column: 27 },
-              startIndex: 1364,
-              endPosition: { row: 55, column: 39 },
-              endIndex: 1376,
+              startPosition: { row: 56, column: 27 },
+              startIndex: 1440,
+              endPosition: { row: 56, column: 39 },
+              endIndex: 1452,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -143,10 +143,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 55, column: 39 },
-              startIndex: 1376,
-              endPosition: { row: 55, column: 40 },
-              endIndex: 1377,
+              startPosition: { row: 56, column: 39 },
+              startIndex: 1452,
+              endPosition: { row: 56, column: 40 },
+              endIndex: 1453,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -156,10 +156,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: ")",
           typeId: 20,
-          startPosition: { row: 55, column: 40 },
-          startIndex: 1377,
-          endPosition: { row: 55, column: 41 },
-          endIndex: 1378,
+          startPosition: { row: 56, column: 40 },
+          startIndex: 1453,
+          endPosition: { row: 56, column: 41 },
+          endIndex: 1454,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -171,20 +171,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
 requireArgs, statementText, statement is: './bundle-url' require('./bundle-url') {
   type: "call_expression",
   typeId: 190,
-  startPosition: { row: 62, column: 21 },
-  startIndex: 1682,
-  endPosition: { row: 62, column: 44 },
-  endIndex: 1705,
+  startPosition: { row: 63, column: 21 },
+  startIndex: 1758,
+  endPosition: { row: 63, column: 44 },
+  endIndex: 1781,
   indent: undefined,
   hasChildren: true,
   children: [
     {
       type: "identifier",
       typeId: 1,
-      startPosition: { row: 62, column: 21 },
-      startIndex: 1682,
-      endPosition: { row: 62, column: 28 },
-      endIndex: 1689,
+      startPosition: { row: 63, column: 21 },
+      startIndex: 1758,
+      endPosition: { row: 63, column: 28 },
+      endIndex: 1765,
       indent: undefined,
       hasChildren: false,
       children: []
@@ -192,20 +192,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
     {
       type: "arguments",
       typeId: 211,
-      startPosition: { row: 62, column: 28 },
-      startIndex: 1689,
-      endPosition: { row: 62, column: 44 },
-      endIndex: 1705,
+      startPosition: { row: 63, column: 28 },
+      startIndex: 1765,
+      endPosition: { row: 63, column: 44 },
+      endIndex: 1781,
       indent: undefined,
       hasChildren: true,
       children: [
         {
           type: "(",
           typeId: 19,
-          startPosition: { row: 62, column: 28 },
-          startIndex: 1689,
-          endPosition: { row: 62, column: 29 },
-          endIndex: 1690,
+          startPosition: { row: 63, column: 28 },
+          startIndex: 1765,
+          endPosition: { row: 63, column: 29 },
+          endIndex: 1766,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -213,20 +213,20 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: "string",
           typeId: 206,
-          startPosition: { row: 62, column: 29 },
-          startIndex: 1690,
-          endPosition: { row: 62, column: 43 },
-          endIndex: 1704,
+          startPosition: { row: 63, column: 29 },
+          startIndex: 1766,
+          endPosition: { row: 63, column: 43 },
+          endIndex: 1780,
           indent: undefined,
           hasChildren: true,
           children: [
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 62, column: 29 },
-              startIndex: 1690,
-              endPosition: { row: 62, column: 30 },
-              endIndex: 1691,
+              startPosition: { row: 63, column: 29 },
+              startIndex: 1766,
+              endPosition: { row: 63, column: 30 },
+              endIndex: 1767,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -234,10 +234,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "string_fragment",
               typeId: 100,
-              startPosition: { row: 62, column: 30 },
-              startIndex: 1691,
-              endPosition: { row: 62, column: 42 },
-              endIndex: 1703,
+              startPosition: { row: 63, column: 30 },
+              startIndex: 1767,
+              endPosition: { row: 63, column: 42 },
+              endIndex: 1779,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -245,10 +245,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
             {
               type: "'",
               typeId: 99,
-              startPosition: { row: 62, column: 42 },
-              startIndex: 1703,
-              endPosition: { row: 62, column: 43 },
-              endIndex: 1704,
+              startPosition: { row: 63, column: 42 },
+              startIndex: 1779,
+              endPosition: { row: 63, column: 43 },
+              endIndex: 1780,
               indent: undefined,
               hasChildren: false,
               children: []
@@ -258,10 +258,10 @@ requireArgs, statementText, statement is: './bundle-url' require('./bundle-url')
         {
           type: ")",
           typeId: 20,
-          startPosition: { row: 62, column: 43 },
-          startIndex: 1704,
-          endPosition: { row: 62, column: 44 },
-          endIndex: 1705,
+          startPosition: { row: 63, column: 43 },
+          startIndex: 1780,
+          endPosition: { row: 63, column: 44 },
+          endIndex: 1781,
           indent: undefined,
           hasChildren: false,
           children: []
@@ -311,6 +311,7 @@ import "./sideeffect.js"
 import "./input_file.ts"
 import "./input_file.ts"
 import { thing88 as t } from "this_works.js"
+import * as thing79, { thing79a, thing79b as thing79c } from "this_works.js"
 import tt from "this_works.js"
 import {ttt} from "this_works.js"
 import { thing87 as tttt } from "this_works.js"
@@ -346,8 +347,8 @@ var cantHandle1 = import { thing } from "this_works.js".thing57.thing58;
 import { thing57 as canHandle1 } from "this_works.js"
 import canHandle2 from "this_works.js"
 import {canHandle3} from "this_works.js"
-import { thing67 as tempVar$jkh30sgt5nj } from "this_works.js"; var {canHandle4} = tempVar$jkh30sgt5nj
-import { thing67 as tempVar$91g6mbonem7 } from "this_works.js"; var {canHandle4} = tempVar$91g6mbonem7
+import { thing67 as tempVar$rrt3x00vnup } from "this_works.js"; var {canHandle4} = tempVar$rrt3x00vnup
+import { thing67 as tempVar$85r1e0dp3l3 } from "this_works.js"; var {canHandle4} = tempVar$85r1e0dp3l3
 {{{{{{
     var canHandle2 = import { thing } from "this_works.js";
 }}}}}}

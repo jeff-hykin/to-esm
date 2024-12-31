@@ -23,6 +23,7 @@ import "./sideeffect" /* CHECKME: file(s) didn't exist */
 import "./input_file.js"
 import "./input_file.js"
 import { thing88 as t } from "./bundle-url" /* CHECKME: file(s) didn't exist */
+import * as thing79, { thing79a, thing79b as thing79c } from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import tt from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import {ttt} from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import { thing87 as tttt } from "./bundle-url" /* CHECKME: file(s) didn't exist */
@@ -58,8 +59,8 @@ var cantHandle1 = require('./bundle-url')/* FIXME: can't auto handle deep requir
 import { thing57 as canHandle1 } from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import canHandle2 from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import {canHandle3} from "./bundle-url" /* CHECKME: file(s) didn't exist */
-import { thing67 as tempVar$xb6cgyiyzd } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$xb6cgyiyzd
-import { thing67 as tempVar$gavzx544zwm } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$gavzx544zwm
+import { thing67 as tempVar$bbcoh69l3uu } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$bbcoh69l3uu
+import { thing67 as tempVar$slr9gcn4jf9 } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$slr9gcn4jf9
 {{{{{{
     var canHandle2 = require('./bundle-url')/* FIXME: can't auto handle deep require (await import('./bundle-url')) */;
 }}}}}}
