@@ -66,6 +66,7 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
                 }
             } else {
                 importWarning = `CHECKME: file(s) didn't exist, assuming npm`
+                importPathString = `npm:${importPathString}`
             }
         }
     }
