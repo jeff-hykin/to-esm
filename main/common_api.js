@@ -305,7 +305,7 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
                 if (usingStatements.length > 0) {
                     usingStatement = usingStatements[0].text
                 }
-                newCode = `${usingStatement}module = module||{};module.exports=module.exports||{};\n${newCode}\n;export default module.exports`
+                newCode = `${usingStatement}var module = module||{};module.exports=module.exports||{};\n${newCode}\n;export default module.exports`
             } else {
                 newCode = `\n${newCode}\n;/* CHECKME: module.exports is used but so is export default */`
             }
