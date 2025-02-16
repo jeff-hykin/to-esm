@@ -1,3 +1,27 @@
-Map(1) {
-  "33:35:6:80:0" => Node({childCount:undefined, start:undefined, end:undefined, parent: Parameter, text:"id"})
+Map(25) {
+  "64:71:9:80:0" => Identifier({childCount:0, start:64, end:71, parent: PropertyAccessExpression, text:"Promise"}),
+  "76:85:10:80:0" => Identifier({childCount:0, start:76, end:85, parent: PropertyAccessExpression, text:"filePaths"}),
+  "96:106:12:80:0" => Identifier({childCount:0, start:96, end:106, parent: PropertyAccessExpression, text:"FileSystem"}),
+  "211:220:5:80:0" => Identifier({childCount:0, start:211, end:220, parent: PrefixUnaryExpression, text:"recursive"}),
+  "276:281:9:80:0" => Identifier({childCount:0, start:276, end:281, parent: CallExpression, text:"Error"}),
+  "354:358:13:80:0" => Identifier({childCount:0, start:354, end:358, parent: PropertyAccessExpression, text:"JSON"}),
+  "413:422:7:80:0" => Identifier({childCount:0, start:413, end:422, parent: BinaryExpression, text:"filePaths"}),
+  "603:613:13:80:0" => Identifier({childCount:0, start:603, end:613, parent: PropertyAccessExpression, text:"FileSystem"}),
+  "730:749:11:80:0" => Identifier({childCount:0, start:730, end:749, parent: PropertyAccessExpression, text:"extensionsToConvert"}),
+  "848:857:7:80:0" => Identifier({childCount:0, start:848, end:857, parent: BinaryExpression, text:"filePaths"}),
+  "860:869:9:80:0" => Identifier({childCount:0, start:860, end:869, parent: PropertyAccessExpression, text:"filePaths"}),
+  "933:950:4:80:0" => Identifier({childCount:0, start:933, end:950, parent: IfStatement, text:"prefixForUnknowns"}),
+  "1006:1019:11:80:0" => Identifier({childCount:0, start:1006, end:1019, parent: BindingElement, text:"importWarning"}),
+  "1177:1190:12:80:0" => Identifier({childCount:0, start:1177, end:1190, parent: PropertyAccessExpression, text:"importWarning"}),
+  "1245:1249:16:80:0" => Identifier({childCount:0, start:1245, end:1249, parent: PropertyAccessExpression, text:"JSON"}),
+  "1260:1277:16:80:0" => Identifier({childCount:0, start:1260, end:1277, parent: BinaryExpression, text:"prefixForUnknowns"}),
+  "1425:1434:4:80:0" => Identifier({childCount:0, start:1425, end:1434, parent: ForOfStatement, text:"filePaths"}),
+  "1473:1478:10:80:0" => Identifier({childCount:0, start:1473, end:1478, parent: CallExpression, text:"toEsm"}),
+  "1529:1543:12:80:0" => Identifier({childCount:0, start:1529, end:1543, parent: ShorthandPropertyAssignment, text:"convertWarning"}),
+  "1593:1600:11:80:0" => Identifier({childCount:0, start:1593, end:1600, parent: IfStatement, text:"inplace"}),
+  "1631:1641:15:80:0" => Identifier({childCount:0, start:1631, end:1641, parent: PropertyAccessExpression, text:"FileSystem"}),
+  "1793:1803:17:80:0" => Identifier({childCount:0, start:1793, end:1803, parent: PropertyAccessExpression, text:"FileSystem"}),
+  "1852:1862:15:80:0" => Identifier({childCount:0, start:1852, end:1862, parent: PropertyAccessExpression, text:"FileSystem"}),
+  "1924:1930:18:80:0" => Identifier({childCount:0, start:1924, end:1930, parent: TemplateSpan, text:"addExt"}),
+  "2034:2041:7:80:0" => Identifier({childCount:0, start:2034, end:2041, parent: PropertyAccessExpression, text:"Promise"})
 }

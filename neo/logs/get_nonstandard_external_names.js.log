@@ -1,0 +1,12 @@
+Set(10) {
+  "filePaths",
+  "FileSystem",
+  "recursive",
+  "extensionsToConvert",
+  "prefixForUnknowns",
+  "importWarning",
+  "toEsm",
+  "convertWarning",
+  "inplace",
+  "addExt"
+}

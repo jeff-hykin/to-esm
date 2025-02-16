@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-all
 import { Project, ScriptTarget, SyntaxKind, Node } from "../ts_morph.js"
 import { makePretty } from "../ts_morph/pretty_print.js"
-import { getExternals } from "../ts_morph/utils.js"
+import { getNonstandardExternalNames } from "../ts_morph/utils.js"
 makePretty({Project, SyntaxKind})
 var project = new Project({compilerOptions: {target: ScriptTarget.ES2022,},})
 var file = project.createSourceFile(`blah.ts`, `
@@ -56,4 +56,4 @@ export function convertProject() {
     await Promise.all(promises)
 }
 `)
-console.log(getExternals(file))
+console.log(await getNonstandardExternalNames(file))
