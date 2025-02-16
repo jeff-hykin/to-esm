@@ -47,6 +47,9 @@ export function isStaticTemplateString(text) {
 export function convertImportsBuilder(requirePathToEcmaScriptPath) {
     return async function convertImports({fileContent, path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, defaultExtension=".js", customConverter=null, handleUnhandlable=()=>null, convertWarning=null}) {
         const code = fileContent
+        if (typeof code !== "string") {
+            throw Error(`fileContent should have been a string, but was a ${typeof code}`)
+        }
         // 
         // convert static template strings to actual normal strings (a bit inefficient)
         // 
