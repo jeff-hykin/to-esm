@@ -207,6 +207,7 @@ export function getExternals(file) {
     return externals
 }
 
+// the overlap of web global names and deno global names as of early 2025
 const defaultStandardGlobals = new Set([
     "Object",
     "Function",
