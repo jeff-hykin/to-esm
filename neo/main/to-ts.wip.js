@@ -1,4 +1,4 @@
-import { FileSystem } from "https://deno.land/x/quickr@0.6.67/main/file_system.js"
+import { FileSystem } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
 import { parseArgs, flag, required, initialValue } from "https://deno.land/x/good@1.7.1.0/flattened/parse_args.js"
 import { toCamelCase } from "https://deno.land/x/good@1.7.1.0/flattened/to_camel_case.js"
 import { didYouMean } from "https://deno.land/x/good@1.7.1.0/flattened/did_you_mean.js"

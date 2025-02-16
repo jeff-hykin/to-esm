@@ -1,5 +1,7 @@
 import { defaultNodeBuildinModuleNames, convertImportsBuilder } from "./common_api.js"
-import { FileSystem, glob } from "https://deno.land/x/quickr@0.6.67/main/file_system.js"
+import { FileSystem, glob } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
+// import { FileSystem, glob } from "/Users/jeffhykin/repos/quickr/main/file_system.js"
+import { commonPrefix } from "https://esm.sh/gh/jeff-hykin/good-js@1.14.3.0/source/flattened/common_prefix.js"
 
 export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning}={})=>{
     const targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
@@ -74,7 +76,7 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
     if (importWarning) {
         const importPathCodeWithWarning = `${importPathCode} /* ${importWarning} */`
         if (convertWarning) {
-            importPathCode = (await convertWarning(importPathString, { importWarning })) || importPathCodeWithWarning
+            importPathCode = (await convertWarning(importPathString, { importWarning, pathToCurrentFile })) || importPathCodeWithWarning    
         } else {
             importPathCode = importPathCodeWithWarning
         }
@@ -87,7 +89,7 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
  *
  * @example
  * ```js
- * import { convertImports } from "https://deno.land/x/to_esm/main/impure_api.js"
+ * //import { convertImports } from "https://deno.land/x/to_esm/main/impure_api.js"
  * console.log(
  *     convertImports({
  *         fileContent: `
@@ -129,7 +131,7 @@ export const convertImports = convertImportsBuilder(requirePathToEcmaScriptPath)
  *
  * @example
  * ```js
- * import { toEsm } from "https://deno.land/x/to_esm/main/impure_api.js"
+ * //import { toEsm } from "https://deno.land/x/to_esm/main/impure_api.js"
  * console.log(
  *     toEsm({
  *         path: "some_file.ts",
@@ -158,3 +160,136 @@ export const convertImports = convertImportsBuilder(requirePathToEcmaScriptPath)
  *
  */
 export const toEsm = async ({path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, customConverter=null, handleUnhandlable=null, convertWarning=null})=>convertImports({fileContent: await FileSystem.read(path), path, nodeBuildinModuleNames, customConverter, handleUnhandlable, convertWarning})
+
+/**
+ * @example
+ * ```js
+ * console.log(await parentPath("/Users/jeffhykin/repos/esm-pytorch/src/"))
+ * ```
+ */
+export const getDepVersions = async (parentPath)=>{
+    var projectFolderOrNull = await FileSystem.walkUpUntil(["package.json","deno.json"], parentPath)
+    let depVersions = {}
+    if (projectFolderOrNull) {
+        const jsonPath =`${projectFolderOrNull}/package.json` 
+        if (await FileSystem.exists(jsonPath)) {
+            try {
+                const pkg = JSON.parse(await FileSystem.read(jsonPath))
+                const deps = {...pkg.dependencies, ...pkg.devDependencies,}
+                for (const [key, value] of Object.entries(deps)) {
+                    if (typeof value === "string") {
+                        let semverMatch
+                        if (semverMatch=value.match(/[^0-9\. \t\n]{0,5}(\d+\.\d+\.\d+)/)) {
+                            depVersions[key] = semverMatch[1]
+                        }
+                    }
+                }
+            } catch (error) {
+                
+            }
+        }
+    }
+    return depVersions
+}
+
+const npmPackageNameRegex = /^((@[a-z0-9-~][a-z0-9-._~]*\/)?([a-z0-9-~][a-z0-9-._~]*))(.+)/ // https://github.com/dword-design/package-name-regex/blob/master/src/index.js
+export async function convertProject({ projectFolder, filePaths, extensionsToConvert=[".js",".ts",".tsx",".jsx",".mjs"], prefixForUnknowns="https://esm.sh/", inplace=false, recursive=false, addExt=".esm"}) {
+    // const parentPath = FileSystem.parentOfAllPaths(filePaths)
+    const depVersions = await getDepVersions(projectFolder)
+    // const projectFolder = (await FileSystem.walkUpUntil(["package.json","deno.json",".git"], parentPath))||parentPath
+        // let centralImportsPath = `${projectFolder}/imports.js`
+        // await FileSystem.ensureIsFile(centralImportsPath)
+        // // regenate
+        // if ((await FileSystem.read(centralImportsPath)).startsWith("// created by to-esm")) {
+        //     FileSystem.write({ data: ``, path: centralImportsPath, overwrite: true })
+        // }
+        // const importJsContent = await FileSystem.read(centralImportsPath)
+        // const importedVersionStuff = {}
+    
+    
+    const fileInfos = await Promise.all(filePaths.map(each=>FileSystem.info(each)))
+    const folders = fileInfos.filter(each=>each.isDirectory).map(each=>each.path)
+    if (!recursive) {
+        if (folders.length > 0) {
+            throw Error(`If you want to convert a folder, use the --recursive flag.\n(folders: ${JSON.stringify(folders)})`)
+        }
+    } else {
+        filePaths = fileInfos.filter(each=>!each.isDirectory).map(each=>each.path)
+        let extraPaths = []
+        for (const each of folders) {
+            extraPaths = extraPaths.concat(await FileSystem.listFilePathsIn(each, {recursively: true}))
+        }
+        extraPaths = extraPaths.filter(
+            eachPath=>extensionsToConvert.some(
+                anExtension=>eachPath.endsWith(anExtension)
+            )
+        )
+        filePaths = filePaths.concat(extraPaths)
+    }
+    let convertWarning = null
+    if (prefixForUnknowns) {
+        convertWarning = async (importPathString, { importWarning, pathToCurrentFile }={}) => {
+            if (importPathString.startsWith('npm:')) {
+                importPathString = importPathString.slice(4)
+            }
+            // TODO: jsr
+            // TODO: deno.land
+
+            if (importWarning.includes('assuming npm')) {
+                // const sourcePath = FileSystem.makeRelativePath({from: pathToCurrentFile, to: centralImportsPath})
+                let match
+                if (match = importPathString.match(npmPackageNameRegex)) {
+                    const [ _ , thePackage, namespace, nameInNamespace, rest ] = match
+                    // 
+                    // get version
+                    // 
+                        let version;
+                        if (depVersions[thePackage]) {
+                            version = depVersions[thePackage]
+                        } else {
+                            // try to get version from esm.sh
+                            try {
+                                const text = await fetch(`https://esm.sh/${thePackage}`).then(each=>each.text())
+                                const remainingVersion = text.slice(0,`/* esm.sh - ${thePackage}`.length)
+                                if (remainingVersion.startsWith("@")) {
+                                    version = remainingVersion.slice(1).split(" ")[0]
+                                }
+                            } catch (error) {
+                                
+                            }
+                        }
+                        if (!version) {
+                            // unable to handle
+                            return `${JSON.stringify(prefixForUnknowns+importPathString)} /* CHECKME: unknown that was prefixed */`
+                        }
+                    //
+                    // default to esm.sh
+                    //
+                        return `${JSON.stringify(`https://esm.sh/${thePackage}@${version}${rest}`)}`
+                        
+                } else {
+                    // unable to handle
+                    return `${JSON.stringify(prefixForUnknowns+importPathString)} /* CHECKME: unknown that was prefixed */`
+                }
+            }
+        }
+    }
+    
+    const promises = []
+    for (const eachPath of filePaths) {
+        promises.push(
+            toEsm({
+                path: eachPath,
+                convertWarning,
+            }).then(each=>{
+                if (inplace) {
+                    return FileSystem.write({ data: each, path: eachPath, overwrite: true})
+                } else {
+                    const [ folders, itemName, itemExtensionWithDot ] = FileSystem.pathPieces(eachPath)
+                    return FileSystem.write({ data: each, path: `${folders.join("/")}/${itemName}${addExt}${itemExtensionWithDot}`, overwrite: true})
+                }
+            })
+        )
+    }
+    await Promise.all(promises)
+}

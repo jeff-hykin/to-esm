@@ -286,7 +286,7 @@ targetImport is: $PROJECT_ROOT/tests/../test/other-thingy/somewhere
 FileSystem.sync.info(targetImport).isFile is: false
 targetImportAsTypeScript is: $PROJECT_ROOT/tests/../test/other-thingy/somewhere.ts
 FileSystem.sync.info(targetImportAsTypeScript).isFile is: false
-"use strict";module = module||{};module.exports=module.exports||{};
+"use strict";var module = module||{};module.exports=module.exports||{};
 // blah
 "use strict";
 
@@ -347,8 +347,8 @@ var cantHandle1 = import { thing } from "this_works.js".thing57.thing58;
 import { thing57 as canHandle1 } from "this_works.js"
 import canHandle2 from "this_works.js"
 import {canHandle3} from "this_works.js"
-import { thing67 as tempVar$rrt3x00vnup } from "this_works.js"; var {canHandle4} = tempVar$rrt3x00vnup
-import { thing67 as tempVar$85r1e0dp3l3 } from "this_works.js"; var {canHandle4} = tempVar$85r1e0dp3l3
+import { thing67 as tempVar$wmlg5otezo } from "this_works.js"; var {canHandle4} = tempVar$wmlg5otezo
+import { thing67 as tempVar$5wwpuxfj0df } from "this_works.js"; var {canHandle4} = tempVar$5wwpuxfj0df
 {{{{{{
     var canHandle2 = import { thing } from "this_works.js";
 }}}}}}

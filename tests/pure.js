@@ -1,5 +1,5 @@
 import { convertImports } from '../main/pure_api.js'
-import { FileSystem } from 'https://deno.land/x/quickr@0.6.67/main/file_system.js'
+import { FileSystem } from 'https://deno.land/x/quickr@0.7.4/main/file_system.js'
 
 const path =  `${FileSystem.thisFolder}/../test/input_file.js`
 console.log(await convertImports({

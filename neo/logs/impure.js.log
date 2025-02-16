@@ -59,8 +59,8 @@ var cantHandle1 = require('./bundle-url')/* FIXME: can't auto handle deep requir
 import { thing57 as canHandle1 } from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import canHandle2 from "./bundle-url" /* CHECKME: file(s) didn't exist */
 import {canHandle3} from "./bundle-url" /* CHECKME: file(s) didn't exist */
-import { thing67 as tempVar$fie9fl5adzm } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$fie9fl5adzm
-import { thing67 as tempVar$mrgkduqn3uk } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$mrgkduqn3uk
+import { thing67 as tempVar$drdjhaeyetp } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$drdjhaeyetp
+import { thing67 as tempVar$majromr7hnf } from "./bundle-url" /* CHECKME: file(s) didn't exist */; var {canHandle4} = tempVar$majromr7hnf
 {{{{{{
     var canHandle2 = require('./bundle-url')/* FIXME: can't auto handle deep require (await import('./bundle-url')) */;
 }}}}}}

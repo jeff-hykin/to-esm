@@ -1,9 +1,9 @@
-import { FileSystem } from "https://deno.land/x/quickr@0.6.67/main/file_system.js"
+import { FileSystem } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
 import { parseArgs, flag, required, initialValue } from "https://deno.land/x/good@1.7.1.0/flattened/parse_args.js"
 import { toCamelCase } from "https://deno.land/x/good@1.7.1.0/flattened/to_camel_case.js"
 import { didYouMean } from "https://deno.land/x/good@1.7.1.0/flattened/did_you_mean.js"
 
-import { toEsm } from './impure_api.js'
+import { toEsm, convertProject } from './impure_api.js'
 import { version } from "./version.js"
 
 // 
@@ -90,50 +90,12 @@ import { version } from "./version.js"
 // main logic
 // 
 // 
-    const fileInfos = await Promise.all(filePaths.map(each=>FileSystem.info(each)))
-    const folders = fileInfos.filter(each=>each.isDirectory).map(each=>each.path)
-    if (!recursive) {
-        if (folders.length > 0) {
-            throw Error(`If you want to convert a folder, use the --recursive flag.\n(folders: ${JSON.stringify(folders)})`)
-        }
-    } else {
-        filePaths = fileInfos.filter(each=>!each.isDirectory).map(each=>each.path)
-        let extraPaths = []
-        for (const each of folders) {
-            extraPaths = extraPaths.concat(await FileSystem.listFilePathsIn(each, {recursively: true}))
-        }
-        extraPaths = extraPaths.filter(
-            eachPath=>extensionsToConvert.some(
-                anExtension=>eachPath.endsWith(anExtension)
-            )
-        )
-        filePaths = filePaths.concat(extraPaths)
-    }
-    let convertWarning = null
-    if (prefixForUnknowns) {
-        convertWarning = async (importPathString, { importWarning }={}) => {
-            if (importPathString.startsWith('npm:')) {
-                importPathString = importPathString.slice(4)
-            }
-            if (importWarning.includes('assuming npm')) {
-                return `${JSON.stringify(prefixForUnknowns+importPathString)} /* CHECKME: unknown that was prefixed */`
-            }
-        }
-    }
-    const promises = []
-    for (const eachPath of filePaths) {
-        promises.push(
-            toEsm({
-                path: eachPath,
-                convertWarning,
-            }).then(each=>{
-                if (inplace) {
-                    return FileSystem.write({ data: each, path: eachPath, overwrite: true})
-                } else {
-                    const [ folders, itemName, itemExtensionWithDot ] = FileSystem.pathPieces(eachPath)
-                    return FileSystem.write({ data: each, path: `${folders.join("/")}/${itemName}${addExt}${itemExtensionWithDot}`, overwrite: true})
-                }
-            })
-        )
-    }
-    await Promise.all(promises)
+    await convertProject({
+        projectFolder: FileSystem.pwd,
+        filePaths,
+        extensionsToConvert,
+        prefixForUnknowns,
+        inplace,
+        recursive,
+        addExt,
+    })
