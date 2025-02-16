@@ -82,6 +82,7 @@ const declareKinds = new Set([
     SyntaxKind.ImportTypeAssertionContainer,
     SyntaxKind.ImportType,
     SyntaxKind.FunctionDeclaration,
+    SyntaxKind.Parameter,
     // "VariableDeclarationList",
     // "ImportDeclaration",
     // "NamedImports",
