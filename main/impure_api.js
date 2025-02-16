@@ -1,5 +1,5 @@
 import { defaultNodeBuildinModuleNames, convertImportsBuilder } from "./common_api.js"
-import { FileSystem, glob } from "https://deno.land/x/quickr@0.6.67/main/file_system.js"
+import { FileSystem, glob } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
 
 export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning}={})=>{
     const targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
@@ -74,7 +74,7 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
     if (importWarning) {
         const importPathCodeWithWarning = `${importPathCode} /* ${importWarning} */`
         if (convertWarning) {
-            importPathCode = (await convertWarning(importPathString, { importWarning })) || importPathCodeWithWarning
+            importPathCode = (await convertWarning(importPathString, { importWarning, pathToCurrentFile })) || importPathCodeWithWarning
         } else {
             importPathCode = importPathCodeWithWarning
         }
