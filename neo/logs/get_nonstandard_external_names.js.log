@@ -1,10 +1,9 @@
-Set(10) {
+Set(9) {
   "filePaths",
   "FileSystem",
   "recursive",
   "extensionsToConvert",
   "prefixForUnknowns",
-  "importWarning",
   "toEsm",
   "convertWarning",
   "inplace",

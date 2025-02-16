@@ -1,4 +1,4 @@
-Map(25) {
+Map(23) {
   "64:71:9:80:0" => Identifier({childCount:0, start:64, end:71, parent: PropertyAccessExpression, text:"Promise"}),
   "76:85:10:80:0" => Identifier({childCount:0, start:76, end:85, parent: PropertyAccessExpression, text:"filePaths"}),
   "96:106:12:80:0" => Identifier({childCount:0, start:96, end:106, parent: PropertyAccessExpression, text:"FileSystem"}),
@@ -11,8 +11,6 @@ Map(25) {
   "848:857:7:80:0" => Identifier({childCount:0, start:848, end:857, parent: BinaryExpression, text:"filePaths"}),
   "860:869:9:80:0" => Identifier({childCount:0, start:860, end:869, parent: PropertyAccessExpression, text:"filePaths"}),
   "933:950:4:80:0" => Identifier({childCount:0, start:933, end:950, parent: IfStatement, text:"prefixForUnknowns"}),
-  "1006:1019:11:80:0" => Identifier({childCount:0, start:1006, end:1019, parent: BindingElement, text:"importWarning"}),
-  "1177:1190:12:80:0" => Identifier({childCount:0, start:1177, end:1190, parent: PropertyAccessExpression, text:"importWarning"}),
   "1245:1249:16:80:0" => Identifier({childCount:0, start:1245, end:1249, parent: PropertyAccessExpression, text:"JSON"}),
   "1260:1277:16:80:0" => Identifier({childCount:0, start:1260, end:1277, parent: BinaryExpression, text:"prefixForUnknowns"}),
   "1425:1434:4:80:0" => Identifier({childCount:0, start:1425, end:1434, parent: ForOfStatement, text:"filePaths"}),

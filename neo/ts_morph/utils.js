@@ -83,6 +83,7 @@ const declareKinds = new Set([
     SyntaxKind.ImportType,
     SyntaxKind.FunctionDeclaration,
     SyntaxKind.Parameter,
+    SyntaxKind.BindingElement,
     // "VariableDeclarationList",
     // "ImportDeclaration",
     // "NamedImports",
@@ -147,6 +148,7 @@ function getLocalsForExternal(file) {
                 SyntaxKind.TypeAliasDeclaration,
                 SyntaxKind.EnumDeclaration,
                 SyntaxKind.Parameter,
+                SyntaxKind.BindingElement,
             ].includes(kind)
         ) {
             const identifiers = eachDeclareNode.getChildren().filter(eachNode=>eachNode.getKind()==SyntaxKind.Identifier)
