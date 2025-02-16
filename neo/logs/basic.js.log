@@ -1,4 +1,4 @@
-Map(23) {
+Map(22) {
   "64:71:9:80:0" => Identifier({childCount:0, start:64, end:71, parent: PropertyAccessExpression, text:"Promise"}),
   "76:85:10:80:0" => Identifier({childCount:0, start:76, end:85, parent: PropertyAccessExpression, text:"filePaths"}),
   "96:106:12:80:0" => Identifier({childCount:0, start:96, end:106, parent: PropertyAccessExpression, text:"FileSystem"}),
@@ -15,7 +15,6 @@ Map(23) {
   "1260:1277:16:80:0" => Identifier({childCount:0, start:1260, end:1277, parent: BinaryExpression, text:"prefixForUnknowns"}),
   "1425:1434:4:80:0" => Identifier({childCount:0, start:1425, end:1434, parent: ForOfStatement, text:"filePaths"}),
   "1473:1478:10:80:0" => Identifier({childCount:0, start:1473, end:1478, parent: CallExpression, text:"toEsm"}),
-  "1529:1543:12:80:0" => Identifier({childCount:0, start:1529, end:1543, parent: ShorthandPropertyAssignment, text:"convertWarning"}),
   "1593:1600:11:80:0" => Identifier({childCount:0, start:1593, end:1600, parent: IfStatement, text:"inplace"}),
   "1631:1641:15:80:0" => Identifier({childCount:0, start:1631, end:1641, parent: PropertyAccessExpression, text:"FileSystem"}),
   "1793:1803:17:80:0" => Identifier({childCount:0, start:1793, end:1803, parent: PropertyAccessExpression, text:"FileSystem"}),

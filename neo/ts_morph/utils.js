@@ -5,6 +5,8 @@
 import { Project, ScriptTarget, SyntaxKind, Node } from "../ts_morph.js"
 export { Project, ScriptTarget, SyntaxKind, Node }
 import { allKeys, deepCopy, deepCopySymbol, allKeyDescriptions, deepSortObject, shallowSortObject, isAsyncIterable, isSyncIterable, } from "https://esm.sh/gh/jeff-hykin/good-js@1.14.3.0/source/value.js"
+// import { frequencyCount } from "https://esm.sh/gh/jeff-hykin/good-js@1.14.3.0/source/flattened/frequency_count.js"
+
 // NOTE!: this doesn't do what we would hope, but its still useful
     // > getWrongDepth(file1)
     // 0
@@ -95,22 +97,24 @@ function getLocalsForExternal(file) {
     const nodesToIgnore = new Set()
     const symbolToNodes = new Map()
     const localSymbols = new Set()
-    const addSymbol = (node)=>{
-        const sym = node.getSymbol()
-        if (sym) {
-            localSymbols.add(sym)
-            let nodes
-            if (symbolToNodes.has(sym)) {
-                nodes = symbolToNodes.get(sym)
+    const addSymbol = (nodeDef)=>{
+        const nodes = nodeDef.findReferencesAsNodes()
+        for (let node of [nodeDef, ...nodes]) {
+            const sym = node.getSymbol()
+            if (sym) {
+                localSymbols.add(sym)
+                let nodes
+                if (symbolToNodes.has(sym)) {
+                    nodes = symbolToNodes.get(sym)
+                } else {
+                    nodes = new Map()
+                    symbolToNodes.set(sym, nodes)
+                }
+                nodes.set(getNodeId(node), node)
             } else {
-                nodes = new Map()
-                symbolToNodes.set(sym, nodes)
+                nodesToIgnore.add(getNodeId(node))
+                // console.debug(`has no symbol: `, node)
             }
-            nodes.set(getNodeId(node), node)
-            return sym
-        } else {
-            nodesToIgnore.add(getNodeId(node))
-            // console.debug(`has no symbol: `, node)
         }
     }
     for (const eachDeclareNode of declares) {
@@ -378,12 +382,11 @@ const defaultStandardGlobals = new Set([
     "valueOf",
     "toLocaleString"
 ])
-export async function getNonstandardExternalNames(file, {standardGlobals=defaultStandardGlobals, extraGlobals=[]}={}) {
+export function getNonstandardExternalNames(file, {standardGlobals=defaultStandardGlobals, extraGlobals=[]}={}) {
     const globalSet = new Set([...standardGlobals, ...extraGlobals])
     let externals = getExternals(file)
     let names = new Set()
-    const allNames = await Promise.all(externals.values().map(each=>each.getText()))
-    for (let each of allNames) {
+    for (let each of externals.values().map(each=>each.getText())) {
         if (globalSet.has(each)) {
             continue
         } else {

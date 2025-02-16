@@ -56,4 +56,4 @@ export function convertProject() {
     await Promise.all(promises)
 }
 `)
-console.log(await getNonstandardExternalNames(file))
+console.log(getNonstandardExternalNames(file))
