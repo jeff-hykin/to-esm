@@ -2,6 +2,10 @@ import { defaultNodeBuildinModuleNames, convertImportsBuilder } from "./common_a
 import { FileSystem, glob } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
 // import { FileSystem, glob } from "/Users/jeffhykin/repos/quickr/main/file_system.js"
 import { commonPrefix } from "https://esm.sh/gh/jeff-hykin/good-js@1.14.3.0/source/flattened/common_prefix.js"
+import { Project, ScriptTarget, SyntaxKind, Node } from "../ts_morph.js"
+import { makePretty } from "../ts_morph/pretty_print.js"
+import { getExternals } from "../ts_morph/utils.js"
+makePretty({Project, SyntaxKind})
 
 export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning}={})=>{
     const targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
@@ -159,7 +163,7 @@ export const convertImports = convertImportsBuilder(requirePathToEcmaScriptPath)
  * @returns {string} output - the converted file content
  *
  */
-export const toEsm = async ({path, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, customConverter=null, handleUnhandlable=null, convertWarning=null})=>convertImports({fileContent: await FileSystem.read(path), path, nodeBuildinModuleNames, customConverter, handleUnhandlable, convertWarning})
+export const toEsm = async ({path, string, nodeBuildinModuleNames=defaultNodeBuildinModuleNames, customConverter=null, handleUnhandlable=null, convertWarning=null})=>convertImports({fileContent: string || (await FileSystem.read(path)), path, nodeBuildinModuleNames, customConverter, handleUnhandlable, convertWarning})
 
 /**
  * @example
@@ -193,6 +197,7 @@ export const getDepVersions = async (parentPath)=>{
 }
 
 const npmPackageNameRegex = /^((@[a-z0-9-~][a-z0-9-._~]*\/)?([a-z0-9-~][a-z0-9-._~]*))(.+)/ // https://github.com/dword-design/package-name-regex/blob/master/src/index.js
+import { getNonstandardExternalNames } from "../ts_morph/utils.js"
 export async function convertProject({ projectFolder, filePaths, extensionsToConvert=[".js",".ts",".tsx",".jsx",".mjs"], prefixForUnknowns="https://esm.sh/", inplace=false, recursive=false, addExt=".esm"}) {
     // const parentPath = FileSystem.parentOfAllPaths(filePaths)
     const depVersions = await getDepVersions(projectFolder)
@@ -276,17 +281,82 @@ export async function convertProject({ projectFolder, filePaths, extensionsToCon
     }
     
     const promises = []
+    const project = new Project({compilerOptions: {target: ScriptTarget.ES2022,},})
+
     for (const eachPath of filePaths) {
+        let string = await FileSystem.read(eachPath)
+        console.debug(`project.createSourceFile.toString() is:`,project.createSourceFile.toString())
+        const file = project.createSourceFile(`blah.ts`, string, 
+            // {overwrite: true, }
+            )
+        const names = getNonstandardExternalNames(file)
+
         promises.push(
             toEsm({
                 path: eachPath,
+                string,
                 convertWarning,
-            }).then(each=>{
+            }).then(string=>{
+                console.log(`here`)
+                // 
+                // process
+                // 
+                if (names.has("process")) {
+                    string = `import process from "node:process"\n${string}`
+                    // string = `import { process } from "https://deno.land/std@0.177.0/node/process.ts"\n${string}`
+                }
+                // 
+                // setImmediate
+                // 
+                if (names.has("setImmediate")) {
+                    string = `import { setImmediate } from "node:timers"\n${string}`
+                }
+                // 
+                // __dirname
+                // 
+                if (names.has("__dirname")) {
+                    string = `const __dirname = new URL(".", import.meta.url).pathname\n${string}`
+                }
+                
+                // 
+                // __filename
+                // 
+                if (names.has("__filename")) {
+                    string = `const __filename = import.meta.filename\n${string}`
+                }
+
+                // 
+                // global
+                // 
+                if (names.has("global")) {
+                    string = `const global = globalThis\n${string}`
+                }
+
+                // 
+                // exports
+                // 
+                if (names.has("exports") && names.has("module")) {
+                    string = `let exports = {}\nlet module = {exports}\n${string}`
+                    if (!string.includes("export default")) {
+                        string = `${string}export default module.exports`
+                    }
+                } else if (names.has("exports")) {
+                    string = `let exports = {}`
+                    if (!string.includes("export default")) {
+                        string = `${string}export default exports`
+                    }
+                } else if (names.has("module")) {
+                    string = `let module = {exports: {}}`
+                    if (!string.includes("export default")) {
+                        string = `${string}export default module.exports`
+                    }
+                }
+
                 if (inplace) {
-                    return FileSystem.write({ data: each, path: eachPath, overwrite: true})
+                    return FileSystem.write({ data: string, path: eachPath, overwrite: true})
                 } else {
                     const [ folders, itemName, itemExtensionWithDot ] = FileSystem.pathPieces(eachPath)
-                    return FileSystem.write({ data: each, path: `${folders.join("/")}/${itemName}${addExt}${itemExtensionWithDot}`, overwrite: true})
+                    return FileSystem.write({ data: string, path: `${folders.join("/")}/${itemName}${addExt}${itemExtensionWithDot}`, overwrite: true})
                 }
             })
         )

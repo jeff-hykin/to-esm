@@ -1,6 +1,7 @@
 // blah
 "use strict";
 
+console.debug(`__dirname is:`,__dirname)
 const { TextDecoder, TextEncoder } = require(`util`)
 
 import "node:fs/promises"

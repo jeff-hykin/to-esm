@@ -302,19 +302,19 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
         )
 
         let newCode = codeChunks.join('')
-        if (usesModuleExportSomewhere) {
-            if (!usesExportDefaultSomewhere) {
-                let usingStatement = ""
-                if (usingStatements.length > 0) {
-                    usingStatement = usingStatements[0].text
-                }
-                newCode = `${usingStatement}var module = module||{};module.exports=module.exports||{};\n${newCode}\n;export default module.exports`
-            } else {
-                newCode = `\n${newCode}\n;/* CHECKME: module.exports is used but so is export default */`
-            }
-        } else if (usesExportsSomewhere && !newCode.match(/\bexport default exports\s*;?\s*$/)) {
-            newCode = `\n${newCode}\n;export default exports`
-        }
+        // if (usesModuleExportSomewhere) {
+        //     if (!usesExportDefaultSomewhere) {
+        //         let usingStatement = ""
+        //         if (usingStatements.length > 0) {
+        //             usingStatement = usingStatements[0].text
+        //         }
+        //         newCode = `${usingStatement}var module = module||{};module.exports=module.exports||{};\n${newCode}\n;export default module.exports`
+        //     } else {
+        //         newCode = `\n${newCode}\n;/* CHECKME: module.exports is used but so is export default */`
+        //     }
+        // } else if (usesExportsSomewhere && !newCode.match(/\bexport default exports\s*;?\s*$/)) {
+        //     newCode = `\n${newCode}\n;export default exports`
+        // }
 
         return newCode
     }
