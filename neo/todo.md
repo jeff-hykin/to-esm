@@ -1,3 +1,4 @@
+- if something ends with .js, still check if the file exists, and if needed, add .ts if the js file doesn't exist and the ts file does
 apparently the `arguments` when used at the top level in Node.js MODULE (but not repl) give the following:
 
 from: `/Users/jeffhykin/repos/pica/node_modules/.deno/webworkify@1.5.0/node_modules/webworkify/index.js`

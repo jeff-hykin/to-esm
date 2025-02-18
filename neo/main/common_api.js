@@ -245,51 +245,67 @@ export function convertImportsBuilder(requirePathToEcmaScriptPath) {
             // 
             // plain
             // 
+            const ending = ""
             if (importType === "plain") {
                 codeChunks.push(
-                    `import ${importPathString}`
+                    `import ${importPathString}${ending}`
                 )
             // 
             // simple
             // 
             } else if (importType === "simple") {
                 codeChunks.push(
-                    `import ${importName.text} from ${importPathString}`
+                    `import ${importName.text} from ${importPathString}${ending}`
                 )
             // 
             // destructuring
             // 
             } else if (importType === "complex") {
                 codeChunks.push(
-                    `import ${importExpansion.text.replace(/:/g,' as ')} from ${importPathString}`
+                    `import ${importExpansion.text.replace(/:/g,' as ')} from ${importPathString}${ending}`
                 )
             } else if (importType === "simplePreExpansion") {
                 if (attrName.text === "default") {
                     codeChunks.push(
-                        `import ${importName.text} from ${importPathString}`
+                        `import ${importName.text} from ${importPathString}${ending}`
                     )
                 } else {
                     codeChunks.push(
-                        `import { ${attrName.text} as ${importName.text} } from ${importPathString}`
+                        `import { ${attrName.text} as ${importName.text} } from ${importPathString}${ending}`
                     )
                 }
             } else if (importType === "complexPreExpansion") {
                 if (attrName.text === "default") {
                     codeChunks.push(
-                        `import ${importExpansion.text.replace(/:/g,' as ')} from ${importPathString}`
+                        `import ${importExpansion.text.replace(/:/g,' as ')} from ${importPathString}${ending}`
                     )
                 } else {
                     const randomVarName = "tempVar$"+Math.random().toString(36).slice(2)
                     codeChunks.push(
-                        `import { ${attrName.text} as ${randomVarName} } from ${importPathString}; var ${importExpansion.text} = ${randomVarName}`
+                        `import { ${attrName.text} as ${randomVarName} } from ${importPathString}; var ${importExpansion.text} = ${randomVarName}${ending}`
                     )
                 }
             } else if (importPathString) {
                 const text = statement.text
                 const preText = text.slice(0, importPath.startIndex-statement.startIndex)
-                const postText = text.slice(importPath.endIndex-statement.startIndex)
+                const postText = text.slice((importPath.endIndex-statement.startIndex))
+                let nearybyNext = ""
+                // I don't know why this works, but it does. There's probably an error with whitespace nodes between import statements
+                // make sure to test run/tests AND
+                const enableStupidHack = true
+                if (enableStupidHack) {
+                    nearybyNext = code.slice(statement.endIndex+1, statement.endIndex+3)
+                    if (nearybyNext.endsWith("i")) {
+                        nearybyNext = nearybyNext.slice(0,-1)
+                    } else {
+                        nearybyNext = nearybyNext.slice(0,-2)
+                    }
+                    if (code.slice(previousIndex, previousIndex+1) === ";") {
+                        previousIndex += 1
+                    }
+                }
                 codeChunks.push(
-                    `${preText}${importPathString}${postText}`
+                    `${preText}${importPathString}${postText}${nearybyNext}`
                 )
             } else {
                 codeChunks.push(

@@ -1,4 +1,0 @@
-project.createSourceFile.toString() is: createSourceFile(e5, t8, n10) {
-    return this._context.compilerFactory.createSourceFile(this._context.fileSystemWrapper.getStandardizedAbsolutePath(e5), t8 ?? "", { ...n10 ?? {}, markInProject: true });
-  }
-here

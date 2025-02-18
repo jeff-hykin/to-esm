@@ -1,3 +1,4 @@
+#!/usr/bin/env -S deno run --allow-all --v8-flags=--max-old-space-size=8192,--stack-size=1048  
 import { FileSystem } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
 import { parseArgs, flag, required, initialValue } from "https://deno.land/x/good@1.7.1.0/flattened/parse_args.js"
 import { toCamelCase } from "https://deno.land/x/good@1.7.1.0/flattened/to_camel_case.js"

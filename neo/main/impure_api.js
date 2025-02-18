@@ -285,8 +285,7 @@ export async function convertProject({ projectFolder, filePaths, extensionsToCon
 
     for (const eachPath of filePaths) {
         let string = await FileSystem.read(eachPath)
-        console.debug(`project.createSourceFile.toString() is:`,project.createSourceFile.toString())
-        const file = project.createSourceFile(`blah.ts`, string, 
+        const file = project.createSourceFile(`blah.${Math.random()}.ts`, string, 
             // {overwrite: true, }
             )
         const names = getNonstandardExternalNames(file)
@@ -297,56 +296,58 @@ export async function convertProject({ projectFolder, filePaths, extensionsToCon
                 string,
                 convertWarning,
             }).then(string=>{
-                console.log(`here`)
+                // simple heuristic to help with formatting
+                const ending = string.match(/;\s*$/) ? ";" : ""
                 // 
                 // process
                 // 
                 if (names.has("process")) {
-                    string = `import process from "node:process"\n${string}`
+                    string = `import process from "node:process"${ending}\n${string}`
                     // string = `import { process } from "https://deno.land/std@0.177.0/node/process.ts"\n${string}`
                 }
                 // 
                 // setImmediate
                 // 
                 if (names.has("setImmediate")) {
-                    string = `import { setImmediate } from "node:timers"\n${string}`
+                    string = `import { setImmediate } from "node:timers"${ending}\n${string}`
                 }
                 // 
                 // __dirname
                 // 
                 if (names.has("__dirname")) {
-                    string = `const __dirname = new URL(".", import.meta.url).pathname\n${string}`
+                    string = `const __dirname = new URL(".", import.meta.url).pathname${ending}\n${string}`
                 }
                 
                 // 
                 // __filename
                 // 
                 if (names.has("__filename")) {
-                    string = `const __filename = import.meta.filename\n${string}`
+                    string = `const __filename = import.meta.filename${ending}\n${string}`
                 }
 
                 // 
                 // global
                 // 
                 if (names.has("global")) {
-                    string = `const global = globalThis\n${string}`
+                    string = `const global = globalThis${ending}\n${string}`
                 }
 
                 // 
                 // exports
                 // 
                 if (names.has("exports") && names.has("module")) {
-                    string = `let exports = {}\nlet module = {exports}\n${string}`
+                    string = `let exports = {}${ending}\nlet module = {exports}${ending}\n${string}`
                     if (!string.includes("export default")) {
                         string = `${string}export default module.exports`
                     }
                 } else if (names.has("exports")) {
-                    string = `let exports = {}`
+                    string = `let exports = {}${ending}\n${string}`
                     if (!string.includes("export default")) {
                         string = `${string}export default exports`
+                    } else {
                     }
                 } else if (names.has("module")) {
-                    string = `let module = {exports: {}}`
+                    string = `let module = {exports: {}}${ending}\n${string}`
                     if (!string.includes("export default")) {
                         string = `${string}export default module.exports`
                     }
