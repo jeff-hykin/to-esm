@@ -338,18 +338,30 @@ export async function convertProject({ projectFolder, filePaths, extensionsToCon
                 if (names.has("exports") && names.has("module")) {
                     string = `let exports = {}${ending}\nlet module = {exports}${ending}\n${string}`
                     if (!string.includes("export default")) {
-                        string = `${string}export default module.exports`
+                        if (string.endsWith(ending+"\n")) {
+                            string = `${string}export default module.exports${ending}\n`
+                        } else {
+                            string = `${string}\nexport default module.exports${ending}`
+                        }
                     }
                 } else if (names.has("exports")) {
                     string = `let exports = {}${ending}\n${string}`
                     if (!string.includes("export default")) {
-                        string = `${string}export default exports`
+                        if (string.endsWith(ending+"\n")) {
+                            string = `${string}export default exports${ending}\n`
+                        } else {
+                            string = `${string}\nexport default exports${ending}`
+                        }
                     } else {
                     }
                 } else if (names.has("module")) {
                     string = `let module = {exports: {}}${ending}\n${string}`
                     if (!string.includes("export default")) {
-                        string = `${string}export default module.exports`
+                        if (string.endsWith(ending+"\n")) {
+                            string = `${string}export default module.exports${ending}\n`
+                        } else {
+                            string = `${string}\nexport default module.exports${ending}`
+                        }
                     }
                 }
 
