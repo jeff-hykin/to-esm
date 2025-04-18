@@ -4,6 +4,7 @@ import { toCamelCase } from "https://deno.land/x/good@1.7.1.0/flattened/to_camel
 import { didYouMean } from "https://deno.land/x/good@1.7.1.0/flattened/did_you_mean.js"
 
 import { toEsm } from './impure_api.js'
+import { escapeString } from './common_api.js'
 import { version } from "./version.js"
 
 // 
@@ -111,12 +112,12 @@ import { version } from "./version.js"
     }
     let convertWarning = null
     if (prefixForUnknowns) {
-        convertWarning = async (importPathString, { importWarning }={}) => {
+        convertWarning = async (importPathString, { importWarning, quotesPreference }={}) => {
             if (importPathString.startsWith('npm:')) {
                 importPathString = importPathString.slice(4)
             }
             if (importWarning.includes('assuming npm')) {
-                return `${JSON.stringify(prefixForUnknowns+importPathString)} /* CHECKME: unknown that was prefixed */`
+                return `${escapeString(prefixForUnknowns+importPathString, quotesPreference)} /* CHECKME: unknown that was prefixed */`
             }
         }
     }

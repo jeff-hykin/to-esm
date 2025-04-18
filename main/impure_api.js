@@ -1,7 +1,7 @@
-import { defaultNodeBuildinModuleNames, convertImportsBuilder } from "./common_api.js"
+import { defaultNodeBuildinModuleNames, convertImports as pureConvertImports, escapeString } from "./common_api.js"
 import { FileSystem, glob } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
 
-export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning}={})=>{
+export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning, quotesPreference}={})=>{
     const targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
     let importWarning = null
     if (nodeBuildinModuleNames.includes(importPathString)) {
@@ -70,11 +70,11 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
             }
         }
     }
-    let importPathCode = JSON.stringify(importPathString)
+    let importPathCode = escapeString(importPathString, quotesPreference)
     if (importWarning) {
         const importPathCodeWithWarning = `${importPathCode} /* ${importWarning} */`
         if (convertWarning) {
-            importPathCode = (await convertWarning(importPathString, { importWarning, pathToCurrentFile })) || importPathCodeWithWarning
+            importPathCode = (await convertWarning(importPathString, { importWarning, pathToCurrentFile, quotesPreference })) || importPathCodeWithWarning
         } else {
             importPathCode = importPathCodeWithWarning
         }
@@ -119,10 +119,14 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
  * @param {Function|null} arg1.handleUnhandlable  - a function, takes requireArgs, statementText, & statement(Node) and returns the replacement of the statement or null(no change)
  * @param {string} arg1.defaultExtension  - the default extension to use if none is provided
  * @param {string[]} arg1.nodeBuildinModuleNames  - probably not needed, but if whats builtin changes, this is were to add it
- * @returns {string} output - the converted file content
+ * @returns {Promise<string>} output - the converted file content
  *
  */
-export const convertImports = convertImportsBuilder(requirePathToEcmaScriptPath)
+export function convertImports(arg) {
+    // just set on argument
+    arg.requirePathToEcmaScriptPath = requirePathToEcmaScriptPath
+    return pureConvertImports(arg)
+}
 
 /**
  * file string with require() to file string with import()
