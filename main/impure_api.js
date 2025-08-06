@@ -2,7 +2,10 @@ import { defaultNodeBuildinModuleNames, convertImports as pureConvertImports, es
 import { FileSystem, glob } from "https://deno.land/x/quickr@0.7.4/main/file_system.js"
 
 export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning, quotesPreference}={})=>{
-    const targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
+    let targetPath = FileSystem.normalize(importPathString)
+    if (!FileSystem.isAbsolutePath(importPathString)) {
+        targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
+    }
     let importWarning = null
     if (nodeBuildinModuleNames.includes(importPathString)) {
         importPathString = `node:${importPathString}`
