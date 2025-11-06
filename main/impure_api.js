@@ -65,7 +65,9 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
                     importWarning = `CHECKME: path is folder, but no index.js or index.ts or mod.js or mod.ts`
                 }
             } else if (main.isFile) {
-                importWarning = `CHECKME: path is file, but not js or ts`
+                if (!(main.basename.endsWith('.js') || main.basename.endsWith('.ts'))) {
+                    importWarning = `CHECKME: path is file, but not js or ts`
+                }
             } else if (isDefinitelyFilePath) {
                 if (importPathString.endsWith('.json')) {
                     importWarning = `CHECKME: importing json is not EcmaScript`
