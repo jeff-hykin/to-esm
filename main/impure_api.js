@@ -4,12 +4,12 @@ import { FileSystem, glob } from "https://deno.land/x/quickr@0.7.4/main/file_sys
 export const requirePathToEcmaScriptPath = async (importPathString, pathToCurrentFile, {nodeBuildinModuleNames=defaultNodeBuildinModuleNames, convertWarning, quotesPreference}={})=>{
     let targetPath = FileSystem.normalize(importPathString)
     if (!FileSystem.isAbsolutePath(importPathString)) {
-        targetPath = `${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`
+        targetPath = FileSystem.normalize(`${FileSystem.parentPath(pathToCurrentFile)}/${importPathString}`)
     }
     let importWarning = null
     if (nodeBuildinModuleNames.includes(importPathString)) {
         importPathString = `node:${importPathString}`
-    } else if (!(importPathString.endsWith('.js') || importPathString.endsWith('.ts'))) {
+    } else {
         const isDefinitelyFilePath = importPathString.startsWith('./') || importPathString.startsWith('../') || importPathString.startsWith('/')
         const isHttpsUrl = importPathString.startsWith('https://') || importPathString.startsWith('http://')
         const isAlmostCertainlyNpm = !isDefinitelyFilePath && (importPathString.startsWith('@') || importPathString.includes('/') || importPathString.startsWith('npm:') || importPathString.startsWith('node:'))
@@ -20,6 +20,13 @@ export const requirePathToEcmaScriptPath = async (importPathString, pathToCurren
                 importPathString = `npm:${importPathString}`
             }
         } else {
+            // this is for when the .js is given but doesn't exist but the .ts does
+            if (targetPath.endsWith('.js')) {
+                targetPath = targetPath.slice(0,-3)
+                if (importPathString.endsWith('.js')) {
+                    importPathString = importPathString.slice(0,-3)
+                }
+            }
             let [ main, js, ts, jsx, tsx ] = await Promise.all([
                 FileSystem.info(`${targetPath}`),
                 FileSystem.info(`${targetPath}.js`),
