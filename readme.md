@@ -2,7 +2,7 @@
 
 Properly converting NodeJS require statements to EcmaScript import statments (using the Tree Sitter parser NOT REGEX, like most the other tools out there). This includes auto-adding `./` in front of local paths, adding `.js` when file extentions are missing, defaulting to `/index.js` when importing a directory, etc.
 
-Works for JavaScript.
+Works for JavaScript and Typescript.
 
 Note: does not handle exports.
 
